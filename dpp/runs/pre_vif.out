@@ -1,0 +1,75 @@
+Loading pretrained model NIMA from /root/.cache/torch/hub/pyiqa/NIMA_koniq-250367ae.pth
+[balle] Balle-rate DPP: gamma=0.01 lam=0.05 perceptual=nima-koniq ch=64 ep=3
+/workspace/sandwiched_compression/dpp/train_balle.py:130: UserWarning: Converting a tensor with requires_grad=True to a scalar may lead to unexpected behavior.
+Consider using tensor.detach() first. (Triggered internally at /pytorch/torch/csrc/autograd/generated/python_variable_methods.cpp:835.)
+  acc["LF"] += float(LF); acc["MOS"] += float(mos_val); acc["VIF"] += float(vif_val)
+ep  0/3 LF=0.0327 MOS=0.3611 VIF=0.5135 BalleBpp=5.279 lam=0.0500 total=0.2160 gnorm=0.607 scaler=0.0100 | [diag q32] base PSNR=34.21@0.745 model PSNR=30.41@0.892 (31s)
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/workspace/sandwiched_compression/dpp/train_balle.py", line 152, in <module>
+    main()
+  File "/workspace/sandwiched_compression/dpp/train_balle.py", line 112, in main
+    mos_val = nima(p01)            # scalar, higher=better
+              ^^^^^^^^^
+  File "/venv/torch-env/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1773, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/venv/torch-env/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1784, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/venv/torch-env/lib/python3.11/site-packages/pyiqa/models/inference_model.py", line 117, in forward
+    output = self.net(target.to(device), **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/venv/torch-env/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1773, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/venv/torch-env/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1784, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/venv/torch-env/lib/python3.11/site-packages/pyiqa/archs/nima_arch.py", line 108, in forward
+    x = self.base_model(x)[-1]
+        ^^^^^^^^^^^^^^^^^^
+  File "/venv/torch-env/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1773, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/venv/torch-env/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1784, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/venv/torch-env/lib/python3.11/site-packages/timm/models/_features.py", line 345, in forward
+    return list(self._collect(x).values())
+                ^^^^^^^^^^^^^^^^
+  File "/venv/torch-env/lib/python3.11/site-packages/timm/models/_features.py", line 299, in _collect
+    x = module(x)
+        ^^^^^^^^^
+  File "/venv/torch-env/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1773, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/venv/torch-env/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1784, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/venv/torch-env/lib/python3.11/site-packages/torch/nn/modules/container.py", line 244, in forward
+    input = module(input)
+            ^^^^^^^^^^^^^
+  File "/venv/torch-env/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1773, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/venv/torch-env/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1784, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/venv/torch-env/lib/python3.11/site-packages/timm/models/inception_resnet_v2.py", line 154, in forward
+    out = self.conv2d(out)
+          ^^^^^^^^^^^^^^^^
+  File "/venv/torch-env/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1773, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/venv/torch-env/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1784, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/venv/torch-env/lib/python3.11/site-packages/torch/nn/modules/conv.py", line 548, in forward
+    return self._conv_forward(input, self.weight, self.bias)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/venv/torch-env/lib/python3.11/site-packages/torch/nn/modules/conv.py", line 543, in _conv_forward
+    return F.conv2d(
+           ^^^^^^^^^
+torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 30.00 MiB. GPU 0 has a total capacity of 15.47 GiB of which 26.69 MiB is free. Including non-PyTorch memory, this process has 15.43 GiB memory in use. Of the allocated memory 14.96 GiB is allocated by PyTorch, and 126.10 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)

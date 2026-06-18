@@ -1,0 +1,130 @@
+[v2] aligned-codec DPP: gamma=0.0 vif_gamma=0.0 lam=0.05 q~U[5,32] ch=64 ep=25 prior=dpp/runs/prior_aligned/entropy.pt calib_luma=yes(28q)
+/workspace/sandwiched_compression/dpp/train_v2.py:160: UserWarning: Converting a tensor with requires_grad=True to a scalar may lead to unexpected behavior.
+Consider using tensor.detach() first. (Triggered internally at /pytorch/torch/csrc/autograd/generated/python_variable_methods.cpp:835.)
+  rec = {"step": gstep, "ep": ep, "q": q, "L1_raw": float(l1),
+  [grad s   0] |gLF|w=1.45e-03 |grate|w=1.31e-03 | dScaler LF=+1.45e-03 rate=-2.62e-02 | cos LF-ra=-1.00 | est/real=0.72 (real 0.720) | res 0.00/0.0 hfO/I=1.000
+[s    0 ep 0 q=29] L1=0.0168 (1-MS)=0.0178 VIF=0.000 MOS=0.000 bppE=0.515 | tot=0.0434 sh LF/P/V/R=0.41/0.00/0.00/0.59 | scl=+0.0000 g=0.000
+[s   50 ep 0 q=19] L1=0.0224 (1-MS)=0.0325 VIF=0.000 MOS=0.000 bppE=0.390 | tot=0.0499 sh LF/P/V/R=0.61/0.00/0.00/0.39 | scl=-0.0050 g=0.298
+== ep 0 (20s) LF=0.0377 VIF=0.000 MOS=0.000 bppE=0.374 scl=-0.0072
+   EVAL-diag q8: base 26.39dB@0.225 ms=0.93465 -> model 26.36dB@0.236 ms=0.93558 | q20: base 29.82dB@0.434 ms=0.97616 -> model 29.69dB@0.458 ms=0.97627
+  [grad s 100] |gLF|w=1.89e-01 |grate|w=1.53e-01 | dScaler LF=+1.88e-01 rate=-3.06e+00 | cos LF-ra=-1.00 | est/real=0.71 (real 0.584) | res 0.97/18.4 hfO/I=1.076
+[s  100 ep 1 q=24] L1=0.0170 (1-MS)=0.0249 VIF=0.000 MOS=0.000 bppE=0.414 | tot=0.0440 sh LF/P/V/R=0.53/0.00/0.00/0.47 | scl=-0.0072 g=0.036
+[s  150 ep 1 q=13] L1=0.0328 (1-MS)=0.0467 VIF=0.000 MOS=0.000 bppE=0.341 | tot=0.0609 sh LF/P/V/R=0.72/0.00/0.00/0.28 | scl=-0.0083 g=0.640
+== ep 1 (20s) LF=0.0455 VIF=0.000 MOS=0.000 bppE=0.402 scl=-0.0106
+   EVAL-diag q8: base 26.39dB@0.225 ms=0.93465 -> model 26.05dB@0.257 ms=0.93500 | q20: base 29.82dB@0.434 ms=0.97616 -> model 28.40dB@0.540 ms=0.96698
+  [grad s 200] |gLF|w=8.38e-01 |grate|w=2.34e-01 | dScaler LF=+8.36e-01 rate=-4.68e+00 | cos LF-ra=-1.00 | est/real=0.57 (real 0.488) | res 5.71/64.4 hfO/I=2.502
+[s  200 ep 2 q=12] L1=0.0277 (1-MS)=0.0565 VIF=0.000 MOS=0.000 bppE=0.277 | tot=0.0646 sh LF/P/V/R=0.79/0.00/0.00/0.21 | scl=-0.0106 g=0.604
+[s  250 ep 2 q= 8] L1=0.0332 (1-MS)=0.0779 VIF=0.000 MOS=0.000 bppE=0.183 | tot=0.0782 sh LF/P/V/R=0.88/0.00/0.00/0.12 | scl=-0.0105 g=1.469
+== ep 2 (20s) LF=0.0485 VIF=0.000 MOS=0.000 bppE=0.437 scl=-0.0111
+   EVAL-diag q8: base 26.39dB@0.225 ms=0.93465 -> model 26.35dB@0.231 ms=0.93502 | q20: base 29.82dB@0.434 ms=0.97616 -> model 29.58dB@0.462 ms=0.97519
+  [grad s 300] |gLF|w=5.76e-01 |grate|w=2.72e-01 | dScaler LF=+5.75e-01 rate=-5.43e+00 | cos LF-ra=-1.00 | est/real=0.72 (real 0.594) | res 3.55/42.0 hfO/I=2.485
+[s  300 ep 3 q=23] L1=0.0174 (1-MS)=0.0273 VIF=0.000 MOS=0.000 bppE=0.430 | tot=0.0468 sh LF/P/V/R=0.54/0.00/0.00/0.46 | scl=-0.0111 g=0.304
+[s  350 ep 3 q=30] L1=0.0194 (1-MS)=0.0312 VIF=0.000 MOS=0.000 bppE=0.577 | tot=0.0577 sh LF/P/V/R=0.50/0.00/0.00/0.50 | scl=-0.0114 g=0.983
+== ep 3 (20s) LF=0.0461 VIF=0.000 MOS=0.000 bppE=0.435 scl=-0.0119
+   EVAL-diag q8: base 26.39dB@0.225 ms=0.93465 -> model 26.21dB@0.241 ms=0.93461 | q20: base 29.82dB@0.434 ms=0.97616 -> model 28.78dB@0.522 ms=0.96485
+  [grad s 400] |gLF|w=3.57e-01 |grate|w=4.39e-01 | dScaler LF=+3.51e-01 rate=-8.78e+00 | cos LF-ra=-0.99 | est/real=0.71 (real 0.571) | res 6.11/79.8 hfO/I=5.557
+[s  400 ep 4 q=19] L1=0.0211 (1-MS)=0.0418 VIF=0.000 MOS=0.000 bppE=0.405 | tot=0.0579 sh LF/P/V/R=0.65/0.00/0.00/0.35 | scl=-0.0119 g=0.106
+[s  450 ep 4 q=16] L1=0.0272 (1-MS)=0.0422 VIF=0.000 MOS=0.000 bppE=0.395 | tot=0.0590 sh LF/P/V/R=0.67/0.00/0.00/0.33 | scl=-0.0121 g=0.525
+== ep 4 (20s) LF=0.0497 VIF=0.000 MOS=0.000 bppE=0.448 scl=-0.0123
+   EVAL-diag q8: base 26.39dB@0.225 ms=0.93465 -> model 26.30dB@0.232 ms=0.93467 | q20: base 29.82dB@0.434 ms=0.97616 -> model 29.25dB@0.486 ms=0.97068
+  [grad s 500] |gLF|w=1.39e+00 |grate|w=5.93e-02 | dScaler LF=+1.39e+00 rate=-1.18e+00 | cos LF-ra=-1.00 | est/real=0.45 (real 0.288) | res 5.31/43.6 hfO/I=3.675
+[s  500 ep 5 q= 6] L1=0.0306 (1-MS)=0.0972 VIF=0.000 MOS=0.000 bppE=0.130 | tot=0.0904 sh LF/P/V/R=0.93/0.00/0.00/0.07 | scl=-0.0123 g=1.328
+[s  550 ep 5 q=11] L1=0.0259 (1-MS)=0.0639 VIF=0.000 MOS=0.000 bppE=0.236 | tot=0.0681 sh LF/P/V/R=0.83/0.00/0.00/0.17 | scl=-0.0122 g=1.309
+== ep 5 (20s) LF=0.0438 VIF=0.000 MOS=0.000 bppE=0.464 scl=-0.0133
+   EVAL-diag q8: base 26.39dB@0.225 ms=0.93465 -> model 25.71dB@0.258 ms=0.92866 | q20: base 29.82dB@0.434 ms=0.97616 -> model 26.43dB@0.619 ms=0.93977
+  [grad s 600] |gLF|w=7.08e-01 |grate|w=8.09e-01 | dScaler LF=-7.07e-01 rate=-1.62e+01 | cos LF-ra=+1.00 | est/real=0.71 (real 0.694) | res 11.11/118.2 hfO/I=8.945
+[s  600 ep 6 q=17] L1=0.0335 (1-MS)=0.0646 VIF=0.000 MOS=0.000 bppE=0.494 | tot=0.0831 sh LF/P/V/R=0.70/0.00/0.00/0.30 | scl=-0.0133 g=1.516
+[s  650 ep 6 q=18] L1=0.0329 (1-MS)=0.0661 VIF=0.000 MOS=0.000 bppE=0.509 | tot=0.0849 sh LF/P/V/R=0.70/0.00/0.00/0.30 | scl=-0.0136 g=1.468
+== ep 6 (20s) LF=0.0484 VIF=0.000 MOS=0.000 bppE=0.479 scl=-0.0133
+   EVAL-diag q8: base 26.39dB@0.225 ms=0.93465 -> model 26.27dB@0.232 ms=0.93444 | q20: base 29.82dB@0.434 ms=0.97616 -> model 29.09dB@0.495 ms=0.96816
+  [grad s 700] |gLF|w=2.12e+00 |grate|w=7.81e-02 | dScaler LF=+2.11e+00 rate=-1.56e+00 | cos LF-ra=-1.00 | est/real=0.42 (real 0.279) | res 6.70/65.9 hfO/I=4.125
+[s  700 ep 7 q= 5] L1=0.0357 (1-MS)=0.1127 VIF=0.000 MOS=0.000 bppE=0.117 | tot=0.1032 sh LF/P/V/R=0.94/0.00/0.00/0.06 | scl=-0.0133 g=2.039
+[s  750 ep 7 q=29] L1=0.0241 (1-MS)=0.0375 VIF=0.000 MOS=0.000 bppE=0.683 | tot=0.0690 sh LF/P/V/R=0.50/0.00/0.00/0.50 | scl=-0.0136 g=1.206
+== ep 7 (20s) LF=0.0557 VIF=0.000 MOS=0.000 bppE=0.453 scl=-0.0141
+   EVAL-diag q8: base 26.39dB@0.225 ms=0.93465 -> model 26.16dB@0.244 ms=0.93494 | q20: base 29.82dB@0.434 ms=0.97616 -> model 28.68dB@0.519 ms=0.96744
+  [grad s 800] |gLF|w=1.37e-01 |grate|w=8.22e-01 | dScaler LF=-1.36e-01 rate=-1.64e+01 | cos LF-ra=+0.99 | est/real=0.78 (real 0.950) | res 6.96/98.3 hfO/I=5.487
+[s  800 ep 8 q=25] L1=0.0284 (1-MS)=0.0293 VIF=0.000 MOS=0.000 bppE=0.740 | tot=0.0661 sh LF/P/V/R=0.44/0.00/0.00/0.56 | scl=-0.0141 g=0.959
+[s  850 ep 8 q= 7] L1=0.0339 (1-MS)=0.0901 VIF=0.000 MOS=0.000 bppE=0.170 | tot=0.0874 sh LF/P/V/R=0.90/0.00/0.00/0.10 | scl=-0.0147 g=1.589
+== ep 8 (20s) LF=0.0455 VIF=0.000 MOS=0.000 bppE=0.483 scl=-0.0149
+   EVAL-diag q8: base 26.39dB@0.225 ms=0.93465 -> model 26.03dB@0.246 ms=0.93307 | q20: base 29.82dB@0.434 ms=0.97616 -> model 27.82dB@0.553 ms=0.95696
+  [grad s 900] |gLF|w=2.93e+00 |grate|w=2.23e-01 | dScaler LF=+2.93e+00 rate=-4.45e+00 | cos LF-ra=-1.00 | est/real=0.52 (real 0.314) | res 11.66/116.9 hfO/I=10.298
+[s  900 ep 9 q= 6] L1=0.0359 (1-MS)=0.1208 VIF=0.000 MOS=0.000 bppE=0.165 | tot=0.1120 sh LF/P/V/R=0.93/0.00/0.00/0.07 | scl=-0.0149 g=2.706
+[s  950 ep 9 q= 9] L1=0.0309 (1-MS)=0.0833 VIF=0.000 MOS=0.000 bppE=0.214 | tot=0.0835 sh LF/P/V/R=0.87/0.00/0.00/0.13 | scl=-0.0149 g=1.416
+== ep 9 (20s) LF=0.0553 VIF=0.000 MOS=0.000 bppE=0.476 scl=-0.0153
+   EVAL-diag q8: base 26.39dB@0.225 ms=0.93465 -> model 26.07dB@0.237 ms=0.93254 | q20: base 29.82dB@0.434 ms=0.97616 -> model 27.75dB@0.542 ms=0.95586
+  [grad s1000] |gLF|w=1.11e+00 |grate|w=1.49e+00 | dScaler LF=-1.11e+00 rate=-2.98e+01 | cos LF-ra=+1.00 | est/real=0.89 (real 0.877) | res 11.84/112.3 hfO/I=12.535
+[s 1000 ep10 q=27] L1=0.0321 (1-MS)=0.0584 VIF=0.000 MOS=0.000 bppE=0.778 | tot=0.0920 sh LF/P/V/R=0.58/0.00/0.00/0.42 | scl=-0.0153 g=2.602
+[s 1050 ep10 q=17] L1=0.0205 (1-MS)=0.0432 VIF=0.000 MOS=0.000 bppE=0.367 | tot=0.0570 sh LF/P/V/R=0.68/0.00/0.00/0.32 | scl=-0.0149 g=0.592
+== ep10 (20s) LF=0.0509 VIF=0.000 MOS=0.000 bppE=0.486 scl=-0.0158
+   EVAL-diag q8: base 26.39dB@0.225 ms=0.93465 -> model 25.84dB@0.251 ms=0.93141 | q20: base 29.82dB@0.434 ms=0.97616 -> model 27.15dB@0.580 ms=0.95041
+  [grad s1100] |gLF|w=1.03e+00 |grate|w=1.32e+00 | dScaler LF=-1.03e+00 rate=-2.63e+01 | cos LF-ra=+1.00 | est/real=0.85 (real 0.885) | res 12.22/158.6 hfO/I=9.343
+[s 1100 ep11 q=23] L1=0.0376 (1-MS)=0.0591 VIF=0.000 MOS=0.000 bppE=0.751 | tot=0.0923 sh LF/P/V/R=0.59/0.00/0.00/0.41 | scl=-0.0158 g=2.348
+[s 1150 ep11 q=29] L1=0.0267 (1-MS)=0.0417 VIF=0.000 MOS=0.000 bppE=0.763 | tot=0.0769 sh LF/P/V/R=0.50/0.00/0.00/0.50 | scl=-0.0154 g=1.581
+== ep11 (20s) LF=0.0521 VIF=0.000 MOS=0.000 bppE=0.469 scl=-0.0152
+   EVAL-diag q8: base 26.39dB@0.225 ms=0.93465 -> model 26.18dB@0.237 ms=0.93396 | q20: base 29.82dB@0.434 ms=0.97616 -> model 28.48dB@0.522 ms=0.96222
+  [grad s1200] |gLF|w=1.83e+00 |grate|w=2.09e-01 | dScaler LF=+1.83e+00 rate=-4.17e+00 | cos LF-ra=-1.00 | est/real=0.55 (real 0.358) | res 9.77/99.2 hfO/I=11.887
+[s 1200 ep12 q= 8] L1=0.0304 (1-MS)=0.0812 VIF=0.000 MOS=0.000 bppE=0.197 | tot=0.0809 sh LF/P/V/R=0.88/0.00/0.00/0.12 | scl=-0.0152 g=1.621
+[s 1250 ep12 q=20] L1=0.0269 (1-MS)=0.0515 VIF=0.000 MOS=0.000 bppE=0.526 | tot=0.0728 sh LF/P/V/R=0.64/0.00/0.00/0.36 | scl=-0.0161 g=1.155
+== ep12 (20s) LF=0.0543 VIF=0.000 MOS=0.000 bppE=0.465 scl=-0.0161
+   EVAL-diag q8: base 26.39dB@0.225 ms=0.93465 -> model 26.04dB@0.247 ms=0.93222 | q20: base 29.82dB@0.434 ms=0.97616 -> model 27.69dB@0.569 ms=0.95151
+  [grad s1300] |gLF|w=1.00e+00 |grate|w=1.19e+00 | dScaler LF=-9.99e-01 rate=-2.37e+01 | cos LF-ra=+1.00 | est/real=0.83 (real 0.853) | res 10.11/105.5 hfO/I=12.120
+[s 1300 ep13 q=26] L1=0.0294 (1-MS)=0.0517 VIF=0.000 MOS=0.000 bppE=0.705 | tot=0.0825 sh LF/P/V/R=0.57/0.00/0.00/0.43 | scl=-0.0161 g=2.188
+[s 1350 ep13 q=17] L1=0.0241 (1-MS)=0.0349 VIF=0.000 MOS=0.000 bppE=0.403 | tot=0.0529 sh LF/P/V/R=0.62/0.00/0.00/0.38 | scl=-0.0158 g=0.298
+== ep13 (20s) LF=0.0520 VIF=0.000 MOS=0.000 bppE=0.478 scl=-0.0153
+   EVAL-diag q8: base 26.39dB@0.225 ms=0.93465 -> model 26.27dB@0.229 ms=0.93468 | q20: base 29.82dB@0.434 ms=0.97616 -> model 29.19dB@0.484 ms=0.97001
+  [grad s1400] |gLF|w=1.91e+00 |grate|w=1.03e-01 | dScaler LF=+1.91e+00 rate=-2.06e+00 | cos LF-ra=-1.00 | est/real=0.46 (real 0.316) | res 7.13/76.9 hfO/I=5.878
+[s 1400 ep14 q= 6] L1=0.0374 (1-MS)=0.1164 VIF=0.000 MOS=0.000 bppE=0.146 | tot=0.1079 sh LF/P/V/R=0.93/0.00/0.00/0.07 | scl=-0.0153 g=1.809
+[s 1450 ep14 q=18] L1=0.0226 (1-MS)=0.0380 VIF=0.000 MOS=0.000 bppE=0.388 | tot=0.0544 sh LF/P/V/R=0.64/0.00/0.00/0.36 | scl=-0.0153 g=0.551
+== ep14 (20s) LF=0.0463 VIF=0.000 MOS=0.000 bppE=0.476 scl=-0.0159
+   EVAL-diag q8: base 26.39dB@0.225 ms=0.93465 -> model 26.22dB@0.234 ms=0.93401 | q20: base 29.82dB@0.434 ms=0.97616 -> model 28.69dB@0.515 ms=0.96243
+  [grad s1500] |gLF|w=1.88e-01 |grate|w=8.77e-01 | dScaler LF=-1.86e-01 rate=-1.75e+01 | cos LF-ra=+0.99 | est/real=0.82 (real 0.743) | res 9.66/100.3 hfO/I=8.912
+[s 1500 ep15 q=24] L1=0.0251 (1-MS)=0.0503 VIF=0.000 MOS=0.000 bppE=0.608 | tot=0.0756 sh LF/P/V/R=0.60/0.00/0.00/0.40 | scl=-0.0159 g=1.063
+[s 1550 ep15 q= 7] L1=0.0286 (1-MS)=0.1016 VIF=0.000 MOS=0.000 bppE=0.164 | tot=0.0952 sh LF/P/V/R=0.91/0.00/0.00/0.09 | scl=-0.0158 g=1.924
+== ep15 (20s) LF=0.0492 VIF=0.000 MOS=0.000 bppE=0.475 scl=-0.0156
+   EVAL-diag q8: base 26.39dB@0.225 ms=0.93465 -> model 26.27dB@0.225 ms=0.93447 | q20: base 29.82dB@0.434 ms=0.97616 -> model 29.29dB@0.472 ms=0.97028
+  [grad s1600] |gLF|w=6.37e-01 |grate|w=3.55e-01 | dScaler LF=+6.36e-01 rate=-7.08e+00 | cos LF-ra=-1.00 | est/real=0.74 (real 0.646) | res 6.41/97.6 hfO/I=4.641
+[s 1600 ep16 q=21] L1=0.0236 (1-MS)=0.0372 VIF=0.000 MOS=0.000 bppE=0.479 | tot=0.0585 sh LF/P/V/R=0.59/0.00/0.00/0.41 | scl=-0.0156 g=0.282
+[s 1650 ep16 q=25] L1=0.0260 (1-MS)=0.0402 VIF=0.000 MOS=0.000 bppE=0.649 | tot=0.0698 sh LF/P/V/R=0.54/0.00/0.00/0.46 | scl=-0.0160 g=0.817
+== ep16 (20s) LF=0.0506 VIF=0.000 MOS=0.000 bppE=0.476 scl=-0.0165
+   EVAL-diag q8: base 26.39dB@0.225 ms=0.93465 -> model 26.16dB@0.242 ms=0.93373 | q20: base 29.82dB@0.434 ms=0.97616 -> model 28.40dB@0.534 ms=0.96073
+  [grad s1700] |gLF|w=1.72e-01 |grate|w=8.52e-01 | dScaler LF=-1.71e-01 rate=-1.70e+01 | cos LF-ra=+0.99 | est/real=0.81 (real 0.836) | res 9.08/102.0 hfO/I=7.230
+[s 1700 ep17 q=24] L1=0.0280 (1-MS)=0.0391 VIF=0.000 MOS=0.000 bppE=0.674 | tot=0.0705 sh LF/P/V/R=0.52/0.00/0.00/0.48 | scl=-0.0165 g=1.023
+[s 1750 ep17 q=11] L1=0.0338 (1-MS)=0.0570 VIF=0.000 MOS=0.000 bppE=0.292 | tot=0.0669 sh LF/P/V/R=0.78/0.00/0.00/0.22 | scl=-0.0161 g=1.080
+== ep17 (20s) LF=0.0523 VIF=0.000 MOS=0.000 bppE=0.481 scl=-0.0162
+   EVAL-diag q8: base 26.39dB@0.225 ms=0.93465 -> model 26.26dB@0.229 ms=0.93428 | q20: base 29.82dB@0.434 ms=0.97616 -> model 29.07dB@0.491 ms=0.96777
+  [grad s1800] |gLF|w=1.06e+00 |grate|w=2.22e-01 | dScaler LF=+1.06e+00 rate=-4.43e+00 | cos LF-ra=-1.00 | est/real=0.64 (real 0.503) | res 7.71/77.3 hfO/I=5.156
+[s 1800 ep18 q=13] L1=0.0280 (1-MS)=0.0488 VIF=0.000 MOS=0.000 bppE=0.322 | tot=0.0608 sh LF/P/V/R=0.73/0.00/0.00/0.27 | scl=-0.0162 g=0.835
+[s 1850 ep18 q=32] L1=0.0227 (1-MS)=0.0439 VIF=0.000 MOS=0.000 bppE=0.727 | tot=0.0760 sh LF/P/V/R=0.52/0.00/0.00/0.48 | scl=-0.0167 g=1.936
+== ep18 (20s) LF=0.0533 VIF=0.000 MOS=0.000 bppE=0.471 scl=-0.0166
+   EVAL-diag q8: base 26.39dB@0.225 ms=0.93465 -> model 26.20dB@0.233 ms=0.93423 | q20: base 29.82dB@0.434 ms=0.97616 -> model 28.64dB@0.513 ms=0.96387
+  [grad s1900] |gLF|w=1.70e+00 |grate|w=1.65e-01 | dScaler LF=+1.70e+00 rate=-3.29e+00 | cos LF-ra=-1.00 | est/real=0.51 (real 0.354) | res 9.12/94.6 hfO/I=6.305
+[s 1900 ep19 q= 7] L1=0.0356 (1-MS)=0.0877 VIF=0.000 MOS=0.000 bppE=0.182 | tot=0.0864 sh LF/P/V/R=0.89/0.00/0.00/0.11 | scl=-0.0166 g=1.539
+[s 1950 ep19 q=10] L1=0.0305 (1-MS)=0.0714 VIF=0.000 MOS=0.000 bppE=0.268 | tot=0.0766 sh LF/P/V/R=0.83/0.00/0.00/0.17 | scl=-0.0174 g=1.330
+== ep19 (20s) LF=0.0580 VIF=0.000 MOS=0.000 bppE=0.478 scl=-0.0174
+   EVAL-diag q8: base 26.39dB@0.225 ms=0.93465 -> model 26.12dB@0.239 ms=0.93273 | q20: base 29.82dB@0.434 ms=0.97616 -> model 27.92dB@0.555 ms=0.95232
+  [grad s2000] |gLF|w=6.49e-01 |grate|w=1.00e+00 | dScaler LF=-6.48e-01 rate=-2.00e+01 | cos LF-ra=+1.00 | est/real=0.84 (real 0.889) | res 9.15/97.0 hfO/I=7.841
+[s 2000 ep20 q=27] L1=0.0291 (1-MS)=0.0432 VIF=0.000 MOS=0.000 bppE=0.749 | tot=0.0778 sh LF/P/V/R=0.52/0.00/0.00/0.48 | scl=-0.0174 g=1.648
+[s 2050 ep20 q=29] L1=0.0318 (1-MS)=0.0455 VIF=0.000 MOS=0.000 bppE=0.866 | tot=0.0861 sh LF/P/V/R=0.50/0.00/0.00/0.50 | scl=-0.0174 g=1.620
+== ep20 (20s) LF=0.0615 VIF=0.000 MOS=0.000 bppE=0.466 scl=-0.0182
+   EVAL-diag q8: base 26.39dB@0.225 ms=0.93465 -> model 25.70dB@0.255 ms=0.92868 | q20: base 29.82dB@0.434 ms=0.97616 -> model 26.69dB@0.606 ms=0.94296
+  [grad s2100] |gLF|w=1.63e+00 |grate|w=2.32e-01 | dScaler LF=+1.62e+00 rate=-4.64e+00 | cos LF-ra=-1.00 | est/real=0.53 (real 0.385) | res 11.66/147.3 hfO/I=11.766
+[s 2100 ep21 q= 7] L1=0.0386 (1-MS)=0.0958 VIF=0.000 MOS=0.000 bppE=0.203 | tot=0.0945 sh LF/P/V/R=0.89/0.00/0.00/0.11 | scl=-0.0182 g=1.394
+[s 2150 ep21 q=25] L1=0.0374 (1-MS)=0.0550 VIF=0.000 MOS=0.000 bppE=0.824 | tot=0.0927 sh LF/P/V/R=0.56/0.00/0.00/0.44 | scl=-0.0182 g=2.021
+== ep21 (20s) LF=0.0584 VIF=0.000 MOS=0.000 bppE=0.474 scl=-0.0176
+   EVAL-diag q8: base 26.39dB@0.225 ms=0.93465 -> model 26.19dB@0.239 ms=0.93399 | q20: base 29.82dB@0.434 ms=0.97616 -> model 28.44dB@0.531 ms=0.96169
+  [grad s2200] |gLF|w=2.85e+00 |grate|w=1.25e-01 | dScaler LF=+2.84e+00 rate=-2.50e+00 | cos LF-ra=-1.00 | est/real=0.47 (real 0.273) | res 9.73/119.2 hfO/I=11.097
+[s 2200 ep22 q= 5] L1=0.0356 (1-MS)=0.1264 VIF=0.000 MOS=0.000 bppE=0.129 | tot=0.1147 sh LF/P/V/R=0.94/0.00/0.00/0.06 | scl=-0.0176 g=2.723
+[s 2250 ep22 q= 9] L1=0.0339 (1-MS)=0.0733 VIF=0.000 MOS=0.000 bppE=0.239 | tot=0.0774 sh LF/P/V/R=0.85/0.00/0.00/0.15 | scl=-0.0172 g=1.551
+== ep22 (20s) LF=0.0511 VIF=0.000 MOS=0.000 bppE=0.488 scl=-0.0169
+   EVAL-diag q8: base 26.39dB@0.225 ms=0.93465 -> model 26.25dB@0.224 ms=0.93407 | q20: base 29.82dB@0.434 ms=0.97616 -> model 29.18dB@0.475 ms=0.96953
+  [grad s2300] |gLF|w=1.44e+00 |grate|w=2.01e-01 | dScaler LF=+1.44e+00 rate=-4.02e+00 | cos LF-ra=-1.00 | est/real=0.64 (real 0.425) | res 7.89/100.5 hfO/I=7.500
+[s 2300 ep23 q=12] L1=0.0253 (1-MS)=0.0596 VIF=0.000 MOS=0.000 bppE=0.272 | tot=0.0664 sh LF/P/V/R=0.79/0.00/0.00/0.21 | scl=-0.0169 g=1.236
+[s 2350 ep23 q=25] L1=0.0293 (1-MS)=0.0299 VIF=0.000 MOS=0.000 bppE=0.735 | tot=0.0665 sh LF/P/V/R=0.45/0.00/0.00/0.55 | scl=-0.0171 g=0.231
+== ep23 (20s) LF=0.0495 VIF=0.000 MOS=0.000 bppE=0.483 scl=-0.0173
+   EVAL-diag q8: base 26.39dB@0.225 ms=0.93465 -> model 26.23dB@0.237 ms=0.93437 | q20: base 29.82dB@0.434 ms=0.97616 -> model 28.72dB@0.520 ms=0.96268
+  [grad s2400] |gLF|w=1.86e+00 |grate|w=1.47e-01 | dScaler LF=+1.86e+00 rate=-2.93e+00 | cos LF-ra=-1.00 | est/real=0.58 (real 0.323) | res 8.68/89.1 hfO/I=6.920
+[s 2400 ep24 q= 8] L1=0.0283 (1-MS)=0.0974 VIF=0.000 MOS=0.000 bppE=0.188 | tot=0.0930 sh LF/P/V/R=0.90/0.00/0.00/0.10 | scl=-0.0173 g=1.713
+[s 2450 ep24 q=31] L1=0.0218 (1-MS)=0.0220 VIF=0.000 MOS=0.000 bppE=0.750 | tot=0.0594 sh LF/P/V/R=0.37/0.00/0.00/0.63 | scl=-0.0178 g=0.780
+== ep24 (20s) LF=0.0503 VIF=0.000 MOS=0.000 bppE=0.494 scl=-0.0177
+   EVAL-diag q8: base 26.39dB@0.225 ms=0.93465 -> model 26.23dB@0.233 ms=0.93397 | q20: base 29.82dB@0.434 ms=0.97616 -> model 28.70dB@0.513 ms=0.96321
+[v2] done -> dpp/runs/v2_A_l05

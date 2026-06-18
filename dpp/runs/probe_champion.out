@@ -1,0 +1,77 @@
+Loading pretrained model NIMA from /root/.cache/torch/hub/pyiqa/NIMA_koniq-250367ae.pth
+[probe] champion recipe instrumented: gamma=0.01 lam=0.05 ch=64 ep=3 q~U[12.0,64.0] eval_q=12
+/workspace/sandwiched_compression/dpp/train_probe.py:156: UserWarning: Converting a tensor with requires_grad=True to a scalar may lead to unexpected behavior.
+Consider using tensor.detach() first. (Triggered internally at /pytorch/torch/csrc/autograd/generated/python_variable_methods.cpp:835.)
+  "L1_raw": float(l1), "msssim_loss_raw": float(msl), "LF": float(LF),
+  [grad s   0] |gLF|=2.292e-03 |gR|raw=2.777e-03 w=1.389e-04 |gP|raw=1.646e-02 w=1.646e-04 | cos(LF,R)=-1.00 cos(LF,P)=-1.00 cos(R,P)=+1.00 | dScaler LF=-2.29e-03 R=+2.78e-03 P=+1.65e-02 | balle/real=6.42 (real 0.843bpp) | res mean/max=0.00/0.0 hfO/I=1.000
+[s   0 ep0 q= 30.8] L1=0.0139 (1-MS)=0.0256 LF=0.0233 MOS=0.362 bpp=5.414 | total=0.2903 shares LF/P/R=0.08/0.01/0.91 | scaler=+0.0000 gnorm=0.002
+[s  10 ep0 q= 57.9] L1=0.0191 (1-MS)=0.0556 LF=0.0483 MOS=0.384 bpp=5.375 | total=0.3132 shares LF/P/R=0.15/0.01/0.84 | scaler=+0.0010 gnorm=0.034
+[s  20 ep0 q= 28.9] L1=0.0143 (1-MS)=0.0238 LF=0.0219 MOS=0.350 bpp=5.359 | total=0.2863 shares LF/P/R=0.07/0.01/0.91 | scaler=+0.0025 gnorm=0.032
+  [grad s  25] |gLF|=5.890e-02 |gR|raw=1.535e-02 w=7.677e-04 |gP|raw=3.525e-01 w=3.525e-03 | cos(LF,R)=-1.00 cos(LF,P)=-1.00 cos(R,P)=+1.00 | dScaler LF=-5.89e-02 R=+1.53e-02 P=+3.52e-01 | balle/real=5.70 (real 0.936bpp) | res mean/max=0.42/4.7 hfO/I=1.003
+[s  30 ep0 q= 48.7] L1=0.0232 (1-MS)=0.0407 LF=0.0372 MOS=0.400 bpp=5.322 | total=0.2993 shares LF/P/R=0.12/0.01/0.87 | scaler=+0.0041 gnorm=0.187
+[s  40 ep0 q= 22.3] L1=0.0114 (1-MS)=0.0163 LF=0.0153 MOS=0.354 bpp=5.322 | total=0.2779 shares LF/P/R=0.05/0.01/0.93 | scaler=+0.0050 gnorm=0.006
+  [grad s  50] |gLF|=1.353e-01 |gR|raw=1.564e-02 w=7.818e-04 |gP|raw=7.657e-02 w=7.657e-04 | cos(LF,R)=-1.00 cos(LF,P)=-0.97 cos(R,P)=+0.97 | dScaler LF=-1.35e-01 R=+1.56e-02 P=+7.46e-02 | balle/real=6.89 (real 0.763bpp) | res mean/max=1.18/14.5 hfO/I=1.016
+[s  50 ep0 q= 49.1] L1=0.0215 (1-MS)=0.0377 LF=0.0344 MOS=0.371 bpp=5.263 | total=0.2939 shares LF/P/R=0.11/0.01/0.87 | scaler=+0.0061 gnorm=0.134
+[s  60 ep0 q= 40.0] L1=0.0209 (1-MS)=0.0332 LF=0.0308 MOS=0.369 bpp=5.238 | total=0.2890 shares LF/P/R=0.10/0.01/0.88 | scaler=+0.0068 gnorm=0.020
+[s  70 ep0 q= 37.9] L1=0.0171 (1-MS)=0.0279 LF=0.0258 MOS=0.387 bpp=5.209 | total=0.2823 shares LF/P/R=0.09/0.01/0.90 | scaler=+0.0066 gnorm=0.142
+  [grad s  75] |gLF|=2.801e-01 |gR|raw=1.556e-02 w=7.778e-04 |gP|raw=3.638e-01 w=3.638e-03 | cos(LF,R)=-1.00 cos(LF,P)=+1.00 cos(R,P)=-1.00 | dScaler LF=-2.80e-01 R=+1.55e-02 P=-3.63e-01 | balle/real=6.22 (real 0.834bpp) | res mean/max=0.84/11.4 hfO/I=1.021
+[s  80 ep0 q= 22.9] L1=0.0152 (1-MS)=0.0167 LF=0.0164 MOS=0.369 bpp=5.199 | total=0.2727 shares LF/P/R=0.06/0.01/0.93 | scaler=+0.0069 gnorm=0.212
+[s  90 ep0 q= 26.9] L1=0.0153 (1-MS)=0.0206 LF=0.0196 MOS=0.340 bpp=5.159 | total=0.2741 shares LF/P/R=0.07/0.01/0.92 | scaler=+0.0079 gnorm=0.307
+== ep0 done (30s) ==
+   TRAIN-codec diag (flat q32, lossless chroma): base 34.21dB@0.745 -> model 33.87dB@0.785
+   EVAL-codec  diag (Annex-K q12, 4:2:0): base 27.95dB@0.304 ms=0.95742 -> model 27.89dB@0.320 ms=0.95805
+  [grad s 100] |gLF|=1.589e-01 |gR|raw=3.681e-02 w=1.841e-03 |gP|raw=2.507e-01 w=2.507e-03 | cos(LF,R)=-1.00 cos(LF,P)=+1.00 cos(R,P)=-1.00 | dScaler LF=-1.59e-01 R=+3.68e-02 P=-2.50e-01 | balle/real=5.41 (real 0.947bpp) | res mean/max=1.21/21.1 hfO/I=1.040
+[s 100 ep1 q= 38.6] L1=0.0184 (1-MS)=0.0281 LF=0.0262 MOS=0.365 bpp=5.125 | total=0.2788 shares LF/P/R=0.09/0.01/0.90 | scaler=+0.0075 gnorm=0.160
+[s 110 ep1 q= 49.9] L1=0.0239 (1-MS)=0.0380 LF=0.0351 MOS=0.382 bpp=5.092 | total=0.2859 shares LF/P/R=0.12/0.01/0.87 | scaler=+0.0084 gnorm=0.013
+[s 120 ep1 q= 29.9] L1=0.0153 (1-MS)=0.0271 LF=0.0248 MOS=0.372 bpp=5.078 | total=0.2750 shares LF/P/R=0.09/0.01/0.90 | scaler=+0.0085 gnorm=0.021
+  [grad s 125] |gLF|=3.807e-01 |gR|raw=2.665e-02 w=1.332e-03 |gP|raw=8.788e-01 w=8.788e-03 | cos(LF,R)=-1.00 cos(LF,P)=+1.00 cos(R,P)=-1.00 | dScaler LF=-3.80e-01 R=+2.66e-02 P=-8.77e-01 | balle/real=6.49 (real 0.779bpp) | res mean/max=2.00/22.4 hfO/I=1.074
+[s 130 ep1 q= 58.5] L1=0.0248 (1-MS)=0.0473 LF=0.0428 MOS=0.392 bpp=5.034 | total=0.2906 shares LF/P/R=0.14/0.01/0.84 | scaler=+0.0085 gnorm=0.446
+[s 140 ep1 q= 25.5] L1=0.0151 (1-MS)=0.0178 LF=0.0172 MOS=0.369 bpp=5.027 | total=0.2649 shares LF/P/R=0.06/0.01/0.92 | scaler=+0.0084 gnorm=0.090
+  [grad s 150] |gLF|=4.887e-01 |gR|raw=2.115e-02 w=1.057e-03 |gP|raw=6.038e-01 w=6.038e-03 | cos(LF,R)=-1.00 cos(LF,P)=+1.00 cos(R,P)=-1.00 | dScaler LF=-4.88e-01 R=+2.11e-02 P=-6.03e-01 | balle/real=6.71 (real 0.742bpp) | res mean/max=1.56/16.6 hfO/I=1.074
+[s 150 ep1 q= 50.3] L1=0.0199 (1-MS)=0.0367 LF=0.0334 MOS=0.390 bpp=4.980 | total=0.2784 shares LF/P/R=0.12/0.01/0.87 | scaler=+0.0086 gnorm=0.494
+[s 160 ep1 q= 31.4] L1=0.0170 (1-MS)=0.0199 LF=0.0193 MOS=0.350 bpp=4.962 | total=0.2639 shares LF/P/R=0.07/0.01/0.92 | scaler=+0.0086 gnorm=0.117
+[s 170 ep1 q= 58.6] L1=0.0220 (1-MS)=0.0493 LF=0.0438 MOS=0.395 bpp=4.921 | total=0.2859 shares LF/P/R=0.15/0.01/0.84 | scaler=+0.0089 gnorm=0.692
+  [grad s 175] |gLF|=5.889e-01 |gR|raw=1.064e-02 w=5.322e-04 |gP|raw=3.498e-01 w=3.498e-03 | cos(LF,R)=-1.00 cos(LF,P)=+0.99 cos(R,P)=-0.99 | dScaler LF=-5.88e-01 R=+1.06e-02 P=-3.47e-01 | balle/real=7.38 (real 0.665bpp) | res mean/max=1.43/16.0 hfO/I=1.093
+[s 180 ep1 q= 37.0] L1=0.0182 (1-MS)=0.0373 LF=0.0334 MOS=0.377 bpp=4.902 | total=0.2748 shares LF/P/R=0.12/0.01/0.87 | scaler=+0.0095 gnorm=0.587
+[s 190 ep1 q= 30.2] L1=0.0171 (1-MS)=0.0288 LF=0.0264 MOS=0.363 bpp=4.878 | total=0.2667 shares LF/P/R=0.10/0.01/0.89 | scaler=+0.0095 gnorm=0.008
+== ep1 done (30s) ==
+   TRAIN-codec diag (flat q32, lossless chroma): base 34.21dB@0.745 -> model 33.89dB@0.796
+   EVAL-codec  diag (Annex-K q12, 4:2:0): base 27.95dB@0.304 ms=0.95742 -> model 27.91dB@0.313 ms=0.95760
+  [grad s 200] |gLF|=4.990e-01 |gR|raw=1.779e-02 w=8.897e-04 |gP|raw=7.407e-01 w=7.407e-03 | cos(LF,R)=-1.00 cos(LF,P)=+1.00 cos(R,P)=-0.99 | dScaler LF=-4.97e-01 R=+1.77e-02 P=-7.38e-01 | balle/real=6.19 (real 0.782bpp) | res mean/max=1.35/15.0 hfO/I=1.105
+[s 200 ep2 q= 46.4] L1=0.0194 (1-MS)=0.0358 LF=0.0325 MOS=0.363 bpp=4.841 | total=0.2710 shares LF/P/R=0.12/0.01/0.87 | scaler=+0.0095 gnorm=0.505
+[s 210 ep2 q= 59.1] L1=0.0269 (1-MS)=0.0473 LF=0.0432 MOS=0.389 bpp=4.812 | total=0.2799 shares LF/P/R=0.15/0.01/0.84 | scaler=+0.0099 gnorm=0.512
+[s 220 ep2 q= 49.5] L1=0.0192 (1-MS)=0.0392 LF=0.0352 MOS=0.369 bpp=4.786 | total=0.2708 shares LF/P/R=0.13/0.01/0.86 | scaler=+0.0098 gnorm=0.430
+  [grad s 225] |gLF|=2.871e-02 |gR|raw=5.313e-02 w=2.656e-03 |gP|raw=7.543e-01 w=7.543e-03 | cos(LF,R)=-0.93 cos(LF,P)=+0.96 cos(R,P)=-0.98 | dScaler LF=-2.69e-02 R=+5.29e-02 P=-7.43e-01 | balle/real=4.26 (real 1.124bpp) | res mean/max=1.60/15.4 hfO/I=1.118
+[s 230 ep2 q= 46.7] L1=0.0174 (1-MS)=0.0379 LF=0.0338 MOS=0.381 bpp=4.761 | total=0.2680 shares LF/P/R=0.12/0.01/0.86 | scaler=+0.0098 gnorm=0.625
+[s 240 ep2 q= 50.2] L1=0.0196 (1-MS)=0.0363 LF=0.0330 MOS=0.383 bpp=4.733 | total=0.2658 shares LF/P/R=0.12/0.01/0.87 | scaler=+0.0097 gnorm=0.551
+  [grad s 250] |gLF|=6.128e-01 |gR|raw=9.996e-03 w=4.998e-04 |gP|raw=1.168e+00 w=1.168e-02 | cos(LF,R)=-1.00 cos(LF,P)=+1.00 cos(R,P)=-1.00 | dScaler LF=-6.12e-01 R=+9.94e-03 P=-1.17e+00 | balle/real=8.07 (real 0.583bpp) | res mean/max=1.26/10.5 hfO/I=1.128
+[s 250 ep2 q= 59.7] L1=0.0206 (1-MS)=0.0457 LF=0.0407 MOS=0.378 bpp=4.703 | total=0.2721 shares LF/P/R=0.15/0.01/0.84 | scaler=+0.0095 gnorm=0.624
+[s 260 ep2 q= 48.3] L1=0.0212 (1-MS)=0.0452 LF=0.0404 MOS=0.399 bpp=4.678 | total=0.2703 shares LF/P/R=0.15/0.01/0.84 | scaler=+0.0101 gnorm=0.443
+[s 270 ep2 q= 29.3] L1=0.0169 (1-MS)=0.0206 LF=0.0199 MOS=0.370 bpp=4.666 | total=0.2495 shares LF/P/R=0.08/0.01/0.91 | scaler=+0.0100 gnorm=0.087
+  [grad s 275] |gLF|=6.757e-01 |gR|raw=1.291e-02 w=6.454e-04 |gP|raw=1.410e+00 w=1.410e-02 | cos(LF,R)=-1.00 cos(LF,P)=+1.00 cos(R,P)=-1.00 | dScaler LF=-6.74e-01 R=+1.28e-02 P=-1.41e+00 | balle/real=7.62 (real 0.609bpp) | res mean/max=1.49/18.9 hfO/I=1.172
+[s 280 ep2 q= 24.7] L1=0.0152 (1-MS)=0.0266 LF=0.0243 MOS=0.354 bpp=4.644 | total=0.2530 shares LF/P/R=0.09/0.01/0.89 | scaler=+0.0104 gnorm=0.810
+[s 290 ep2 q= 20.8] L1=0.0124 (1-MS)=0.0157 LF=0.0150 MOS=0.362 bpp=4.627 | total=0.2427 shares LF/P/R=0.06/0.01/0.93 | scaler=+0.0101 gnorm=0.047
+== ep2 done (30s) ==
+   TRAIN-codec diag (flat q32, lossless chroma): base 34.21dB@0.745 -> model 33.32dB@0.856
+   EVAL-codec  diag (Annex-K q12, 4:2:0): base 27.95dB@0.304 ms=0.95742 -> model 27.87dB@0.322 ms=0.95762
+Traceback (most recent call last):
+  File "/workspace/sandwiched_compression/dpp/train_probe.py", line 236, in <module>
+    main()
+  File "/workspace/sandwiched_compression/dpp/train_probe.py", line 231, in main
+    json.dump(metrics, open(os.path.join(a.out_dir, "metrics.json"), "w"), indent=2)
+  File "/venv/sandwich-env/lib/python3.11/json/__init__.py", line 179, in dump
+    for chunk in iterable:
+  File "/venv/sandwich-env/lib/python3.11/json/encoder.py", line 430, in _iterencode
+    yield from _iterencode_list(o, _current_indent_level)
+  File "/venv/sandwich-env/lib/python3.11/json/encoder.py", line 326, in _iterencode_list
+    yield from chunks
+  File "/venv/sandwich-env/lib/python3.11/json/encoder.py", line 406, in _iterencode_dict
+    yield from chunks
+  File "/venv/sandwich-env/lib/python3.11/json/encoder.py", line 326, in _iterencode_list
+    yield from chunks
+  File "/venv/sandwich-env/lib/python3.11/json/encoder.py", line 439, in _iterencode
+    o = _default(o)
+        ^^^^^^^^^^^
+  File "/venv/sandwich-env/lib/python3.11/json/encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type float32 is not JSON serializable

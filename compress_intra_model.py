@@ -29,6 +29,12 @@ from distortion import distortion_fns
 from pre_post_models import unet as simple_unet
 from utilities import serialization
 
+SAMPLING_MODES = (
+    'resize',
+    'cnn_stride_transpose',
+    'cnn_stride_resize_conv',
+)
+
 
 def downsample_tensor(
     inputs: tf.Tensor,
@@ -56,6 +62,140 @@ def upsample_tensor(
   return upsampled
 
 
+class ChannelwiseBoxInitializer(tf.keras.initializers.Initializer):
+  """Initializes a conv kernel as per-channel box filtering."""
+
+  def __call__(self, shape, dtype=None):
+    dtype = dtype or tf.float32
+    kernel_h, kernel_w, input_channels, output_channels = shape
+    values = [[[[0.0 for _ in range(output_channels)]
+                for _ in range(input_channels)]
+               for _ in range(kernel_w)]
+              for _ in range(kernel_h)]
+    scale = 1.0 / float(kernel_h * kernel_w)
+    for output_channel in range(output_channels):
+      input_channel = min(output_channel, input_channels - 1)
+      for row in range(kernel_h):
+        for col in range(kernel_w):
+          values[row][col][input_channel][output_channel] = scale
+    return tf.constant(values, dtype=dtype)
+
+
+class ChannelwiseIdentityInitializer(tf.keras.initializers.Initializer):
+  """Initializes a same-channel conv kernel as identity."""
+
+  def __call__(self, shape, dtype=None):
+    dtype = dtype or tf.float32
+    kernel_h, kernel_w, input_channels, output_channels = shape
+    values = [[[[0.0 for _ in range(output_channels)]
+                for _ in range(input_channels)]
+               for _ in range(kernel_w)]
+              for _ in range(kernel_h)]
+    center_h = kernel_h // 2
+    center_w = kernel_w // 2
+    for channel in range(min(input_channels, output_channels)):
+      values[center_h][center_w][channel][channel] = 1.0
+    return tf.constant(values, dtype=dtype)
+
+
+class BilinearTransposeInitializer(tf.keras.initializers.Initializer):
+  """Initializes Conv2DTranspose as per-channel bilinear upsampling."""
+
+  def __call__(self, shape, dtype=None):
+    dtype = dtype or tf.float32
+    kernel_h, kernel_w, output_channels, input_channels = shape
+    values = [[[[0.0 for _ in range(input_channels)]
+                for _ in range(output_channels)]
+               for _ in range(kernel_w)]
+              for _ in range(kernel_h)]
+
+    def axis_weight(index: int, size: int) -> float:
+      factor = (size + 1) // 2
+      center = factor - 1 if size % 2 == 1 else factor - 0.5
+      return 1.0 - abs(index - center) / float(factor)
+
+    for output_channel in range(output_channels):
+      input_channel = min(output_channel, input_channels - 1)
+      for row in range(kernel_h):
+        for col in range(kernel_w):
+          values[row][col][output_channel][input_channel] = (
+              axis_weight(row, kernel_h) * axis_weight(col, kernel_w)
+          )
+    return tf.constant(values, dtype=dtype)
+
+
+def create_learned_downsampler(
+    output_channels: int,
+    factor: int,
+    sampling_mode: str,
+) -> tf.keras.Model:
+  """Returns a trainable spatial downsampler for bottleneck tensors."""
+  if sampling_mode not in SAMPLING_MODES:
+    raise ValueError(f'Unknown sampling_mode {sampling_mode!r}.')
+  if sampling_mode == 'resize':
+    raise ValueError('resize mode does not use a learned downsampler.')
+  kernel_size = max(2 * factor, 2)
+  return tf.keras.Sequential(
+      [
+          tf.keras.layers.Conv2D(
+              filters=output_channels,
+              kernel_size=kernel_size,
+              strides=factor,
+              padding='same',
+              use_bias=False,
+              kernel_initializer=ChannelwiseBoxInitializer(),
+              name='learned_downsample_conv',
+          )
+      ],
+      name='LearnedDownsampler',
+  )
+
+
+def create_learned_upsampler(
+    output_channels: int,
+    factor: int,
+    sampling_mode: str,
+) -> tf.keras.Model:
+  """Returns a trainable spatial upsampler for bottleneck tensors."""
+  if sampling_mode == 'cnn_stride_transpose':
+    kernel_size = max(2 * factor, 2)
+    return tf.keras.Sequential(
+        [
+            tf.keras.layers.Conv2DTranspose(
+                filters=output_channels,
+                kernel_size=kernel_size,
+                strides=factor,
+                padding='same',
+                use_bias=False,
+                kernel_initializer=BilinearTransposeInitializer(),
+                name='learned_upsample_deconv',
+            )
+        ],
+        name='LearnedUpsampler',
+    )
+  if sampling_mode == 'cnn_stride_resize_conv':
+    return tf.keras.Sequential(
+        [
+            tf.keras.layers.UpSampling2D(
+                size=(factor, factor),
+                interpolation='bilinear',
+                name='resize_upsample_for_cnn',
+            ),
+            tf.keras.layers.Conv2D(
+                filters=output_channels,
+                kernel_size=3,
+                strides=1,
+                padding='same',
+                use_bias=False,
+                kernel_initializer=ChannelwiseIdentityInitializer(),
+                name='learned_upsample_refine_conv',
+            ),
+        ],
+        name='LearnedUpsampler',
+    )
+  raise ValueError(f'Unknown learned upsampler mode {sampling_mode!r}.')
+
+
 def create_mlp_model(
     num_layers: int,
     num_channels: int,
@@ -67,6 +207,10 @@ def create_mlp_model(
   kernel_size = 1
   model = tf.keras.Sequential(name=name)
 
+  import os as _os
+  _orth = _os.environ.get("ORTH_INIT", "0") == "1"
+  _init = 'orthogonal' if _orth else 'glorot_uniform'
+
   # Add hidden layers.
   for _ in range(num_layers - 1):
     model.add(
@@ -75,7 +219,8 @@ def create_mlp_model(
             padding='same',
             kernel_size=kernel_size,
             filters=num_channels,
-            activation=activation))
+            activation=activation,
+            kernel_initializer=_init))
 
   # Add final linear layer.
   model.add(
@@ -84,7 +229,8 @@ def create_mlp_model(
           padding='same',
           kernel_size=kernel_size,
           filters=output_channels,
-          activation=None))
+          activation=None,
+          kernel_initializer=_init))
   return model
 
 
@@ -132,6 +278,7 @@ class PreprocessCompressPostprocess(tf.keras.Model):
       output_channels: int = 3,
       num_mlp_layers: int = 2,
       num_mlp_nodes: int = 16,
+      sampling_mode: str = 'resize',
       model_config_thresholds: ModelConfigurationThresholds = ModelConfigurationThresholds(),
       name: str = 'PreprocessCompressPostprocess',
   ):
@@ -159,6 +306,10 @@ class PreprocessCompressPostprocess(tf.keras.Model):
         (num_mlp_layers=0 for identity, num_mlp_layers=1 for linear layers.)
       num_mlp_nodes: Number of nodes in the mlp hidden layer. Ignored for
         identity or linear layers.
+      sampling_mode: Spatial down/up sampling mode. "resize" preserves the
+        original fixed bicubic/Lanczos3 path. "cnn_stride_transpose" and
+        "cnn_stride_resize_conv" replace the bottleneck resize operations with
+        trainable layers.
       model_config_thresholds: Fraction of epochs over which different
         configurations of the model should be trained. Useful in changing model
         configuration during training in order to find a better minimum.
@@ -193,17 +344,23 @@ class PreprocessCompressPostprocess(tf.keras.Model):
     if downsample_factor <= 0 or not isinstance(downsample_factor, int):
       raise ValueError('downsample_factor must be a positive integer.')
 
+    if sampling_mode not in SAMPLING_MODES:
+      raise ValueError(
+          f'Got sampling_mode {sampling_mode!r}. Expected one of {SAMPLING_MODES}.'
+      )
+
     self.downsample_factor = downsample_factor
+    self.sampling_mode = sampling_mode
     self.num_truncate_bits = num_truncate_bits
     self.hdr_simul_qstep = tf.cast(1 << num_truncate_bits, dtype=tf.float32)
 
     if preprocessor_layer is None:
-      self._unet_preprocessor = lambda x, y: tf.zeros_like(x)
+      self._unet_preprocessor = lambda x, *args, **kwargs: tf.zeros_like(x)
     else:
       self._unet_preprocessor = preprocessor_layer
 
     if postprocessor_layer is None:
-      self._unet_postprocessor = lambda x, y: tf.zeros_like(x)
+      self._unet_postprocessor = lambda x, *args, **kwargs: tf.zeros_like(x)
     else:
       self._unet_postprocessor = postprocessor_layer
 
@@ -214,7 +371,14 @@ class PreprocessCompressPostprocess(tf.keras.Model):
         dtype=tf.int32)
 
     unet_scalers_are_trainable = True
-    unet_scalers_initializer = 0.0
+    # Allow override via env var (diagnostic — paper doesn't say init=0.0)
+    import os as _os
+    _override_init = _os.environ.get("UNET_SCALER_INIT")
+    unet_scalers_initializer = float(_override_init) if _override_init else 0.0
+    _override_trainable = _os.environ.get("UNET_SCALER_TRAINABLE")
+    if _override_trainable is not None:
+        unet_scalers_are_trainable = _override_trainable != "0"
+        logging.info("UNET_SCALER_TRAINABLE override: %s", unet_scalers_are_trainable)
     if self.num_mlp_layers > 0:
       self._mlp_preprocessor = create_mlp_model(
           num_layers=self.num_mlp_layers.numpy(),
@@ -229,10 +393,12 @@ class PreprocessCompressPostprocess(tf.keras.Model):
           activation=tf.math.sin,
           name='MLPPostprocessor')
     else:
-      self._mlp_preprocessor = lambda x, y: x
-      self._mlp_postprocessor = lambda x, y: x
-      unet_scalers_are_trainable = False
-      unet_scalers_initializer = 1.0
+      self._mlp_preprocessor = lambda x, *a, **kw: x
+      self._mlp_postprocessor = lambda x, *a, **kw: x
+      if _override_trainable is None:
+        unet_scalers_are_trainable = False
+      if _override_init is None:
+        unet_scalers_initializer = 1.0
 
     # Scales the preprocessors so that
     # bottleneck = self._unet_preprocessor_scaler * self._unet_preprocessor(...)
@@ -295,6 +461,21 @@ class PreprocessCompressPostprocess(tf.keras.Model):
         trainable=False,
         name='configuration',
         dtype=tf.int32)
+
+    if self.downsample_factor > 1 and self.sampling_mode != 'resize':
+      self._learned_downsampler = create_learned_downsampler(
+          output_channels=bottleneck_channels,
+          factor=self.downsample_factor,
+          sampling_mode=self.sampling_mode,
+      )
+      self._learned_upsampler = create_learned_upsampler(
+          output_channels=bottleneck_channels,
+          factor=self.downsample_factor,
+          sampling_mode=self.sampling_mode,
+      )
+    else:
+      self._learned_downsampler = None
+      self._learned_upsampler = None
 
     # Adjust mean/scale to improve training. Adjustment are made at the input of
     # networks and inverted at the output.
@@ -387,10 +568,21 @@ class PreprocessCompressPostprocess(tf.keras.Model):
         self._mlp_preprocessor(adjusted_inputs, training=training) + scale *
         self._unet_preprocessor(adjusted_inputs, training=training)) + self.mean_adjust
 
+    # DPP paradigm: preprocessor modifies LUMA only. Keep the original chroma (U,V)
+    # untouched; only the Y channel carries the learned residual. (BT.601 rgb<->yuv is
+    # linear so this works directly on [0,255] and is differentiable.)
+    if getattr(self, 'preproc_luma_only', False) and output.shape[-1] == 3:
+      y_pre = tf.image.rgb_to_yuv(output)[..., 0:1]      # preprocessed luma
+      uv_in = tf.image.rgb_to_yuv(inputs)[..., 1:3]      # ORIGINAL chroma (untouched)
+      output = tf.image.yuv_to_rgb(tf.concat([y_pre, uv_in], axis=-1))
+
     if self.downsample_factor > 1:
-      output = downsample_tensor(
-          output, self.downsample_factor, method=tf.image.ResizeMethod.BICUBIC
-      )
+      if self.sampling_mode == 'resize':
+        output = downsample_tensor(
+            output, self.downsample_factor, method=tf.image.ResizeMethod.BICUBIC
+        )
+      else:
+        output = self._learned_downsampler(output, training=training)
 
     if self.num_truncate_bits:
       # Truncate last self.num_truncate_bits.
@@ -408,11 +600,16 @@ class PreprocessCompressPostprocess(tf.keras.Model):
       compressed_bottleneck += self.hdr_simul_qstep / 2
 
     if self.downsample_factor > 1:
-      compressed_bottleneck = upsample_tensor(
-          compressed_bottleneck,
-          self.downsample_factor,
-          method=tf.image.ResizeMethod.LANCZOS3,
-      )
+      if self.sampling_mode == 'resize':
+        compressed_bottleneck = upsample_tensor(
+            compressed_bottleneck,
+            self.downsample_factor,
+            method=tf.image.ResizeMethod.LANCZOS3,
+        )
+      else:
+        compressed_bottleneck = self._learned_upsampler(
+            compressed_bottleneck, training=training
+        )
 
     adjusted_inputs = (compressed_bottleneck -
                        self.mean_adjust) / self.scale_adjust
@@ -449,12 +646,29 @@ class PreprocessCompressPostprocess(tf.keras.Model):
       outputs: Dictionary containing the prediction, rate, and bottleneck
         tensors.
     """
+    # Toggle the global quantizer training phase so that noise_injection_round
+    # (if selected) uses additive uniform noise during training and hard
+    # round() at inference. No-op for straight_through.
+    set_quantizer_training_phase(bool(training))
+
     inputs = self.dict_to_model_inputs(input_dict)
 
     bottleneck = self.run_preprocessor(inputs, training)
 
     compressed_bottleneck, rate = self.intra_compression_layer(
         tf.clip_by_value(bottleneck, 0., 255.))
+
+    # DPP paradigm: codec compresses LUMA only; chroma (U,V) is carried LOSSLESS from
+    # the ORIGINAL input. Restore original chroma onto the decoded luma. Cascade effects:
+    #  - perceptual loss + fidelity then see decoded-Y + lossless-UV (DPP's p_hat^RGB);
+    #  - fidelity becomes effectively luma-only (chroma error = 0);
+    #  - the chroma part of `rate` is constant w.r.t. the (luma-only) preprocessor, so
+    #    the optimized rate gradient is effectively Y-only (DPP codes Y bits only).
+    if getattr(self, 'codec_luma_only', False) and compressed_bottleneck.shape[-1] == 3:
+      yuv_dec = tf.image.rgb_to_yuv(compressed_bottleneck)
+      yuv_in = tf.image.rgb_to_yuv(inputs)
+      compressed_bottleneck = tf.image.yuv_to_rgb(
+          tf.concat([yuv_dec[..., 0:1], yuv_in[..., 1:3]], axis=-1))
 
     compressed_bottleneck = self.apply_loop_filter(compressed_bottleneck)
 
@@ -472,13 +686,79 @@ class PreprocessCompressPostprocess(tf.keras.Model):
 
 
 def differentiable_round(x: tf.Tensor) -> tf.Tensor:
-  """Differentiable rounding."""
+  """Straight-through rounding: forward = round, backward = identity."""
   return x + tf.stop_gradient(tf.round(x) - x)
 
 
 def _differentiable_truncate(x: tf.Tensor) -> tf.Tensor:
   """Differentiable truncation."""
   return x + tf.stop_gradient(tf.math.floordiv(x, 1) - x)
+
+
+# Module-level flag (tf.Variable) that the parent model toggles per call.
+# 1.0 during training (model called with training=True), 0.0 otherwise.
+# Used by noise_injection_round to decide forward path. This is a singleton
+# because there is at most one PreprocessCompressPostprocess instance per
+# Python process in our pipelines; concurrent multi-model training would need
+# a per-model variable instead.
+_GLOBAL_QUANTIZER_TRAINING_PHASE = tf.Variable(
+    0.0, trainable=False, dtype=tf.float32,
+    name="quantizer_training_phase",
+)
+
+
+def set_quantizer_training_phase(training: bool) -> None:
+  _GLOBAL_QUANTIZER_TRAINING_PHASE.assign(1.0 if training else 0.0)
+
+
+def noise_injection_round(x: tf.Tensor) -> tf.Tensor:
+  """Theis/Ballé-style soft rounding for compression training.
+
+  Training forward: x + U(-0.5, 0.5) (noise distribution matches expected
+  quantization error of round). Inference forward: tf.round(x). Backward
+  gradient is the identity (additive noise has unit Jacobian).
+  """
+  noisy = x + tf.random.uniform(tf.shape(x), minval=-0.5, maxval=0.5)
+  hard = tf.round(x)
+  return tf.cond(
+      _GLOBAL_QUANTIZER_TRAINING_PHASE > 0.5,
+      lambda: noisy,
+      lambda: hard,
+  )
+
+
+def _diff_jpeg_polynomial_round(x: tf.Tensor) -> tf.Tensor:
+  """Polynomial-surrogate rounding from Reich et al. WACV 2024.
+  Forward: round(x) + (x - round(x))^3 (smooth, not exactly round).
+  Backward: autograd of cubic = 3*(x - round(x))^2.
+  """
+  from image_compression import diff_jpeg_tf
+  return diff_jpeg_tf.polynomial_round(x)
+
+
+def _diff_jpeg_ste_polynomial_round(x: tf.Tensor) -> tf.Tensor:
+  """STE rounding with paper's polynomial backward.
+  Forward: exact tf.round.
+  Backward: 3*(x - round(x))^2 (not constant 1).
+  """
+  from image_compression import diff_jpeg_tf
+  return diff_jpeg_tf.ste_polynomial_round(x)
+
+
+_QUANTIZER_FNS = {
+    "straight_through": differentiable_round,
+    "noise_injection": noise_injection_round,
+    "polynomial": _diff_jpeg_polynomial_round,
+    "ste_polynomial": _diff_jpeg_ste_polynomial_round,
+}
+
+
+def get_quantizer_fn(name: str):
+  if name not in _QUANTIZER_FNS:
+    raise ValueError(
+        f"unknown quantizer mode {name!r}; expected one of {list(_QUANTIZER_FNS)}"
+    )
+  return _QUANTIZER_FNS[name]
 
 
 def _distortion_rate_loss(
@@ -718,6 +998,19 @@ def create_basic_model(
     loop_filter_folder: Optional[str] = None,
     use_unet_preprocessor: bool = True,
     use_unet_postprocessor: bool = True,
+    sampling_mode: str = 'resize',
+    quantizer_mode: str = 'straight_through',
+    rate_proxy_mode: str = 'log_nonzero',
+    rate_proxy_grad_scale: float = 1.0,
+    codec_forward_mode: str = 'proxy',
+    post_jpeg_int_round: bool = False,
+    output_clip_mode: str = 'hard',
+    convert_to_yuv: bool = False,
+    downsample_chroma: bool = False,
+    qstep_init_override: Optional[float] = None,
+    train_qstep: bool = True,
+    preprocessor_factory: Optional[Callable[..., tf.keras.Model]] = None,
+    postprocessor_factory: Optional[Callable[..., tf.keras.Model]] = None,
 ) -> tf.keras.Model:
   """Constructs the Keras model for PreprocessCompressPostprocess.
 
@@ -744,12 +1037,15 @@ def create_basic_model(
     loop_filter_folder: Folder containing the model for loop filtering proxy.
     use_unet_preprocessor: Whether preprocessor unet is on.
     use_unet_postprocessor: Whether postprocessor unet is on.
+    sampling_mode: Spatial down/up sampling mode for LR wrapping.
 
   Returns:
     Constructed Keras model.
   """
 
-  if gamma is not None:
+  if qstep_init_override is not None:
+    qstep_init = float(qstep_init_override)
+  elif gamma is not None:
     qstep_init = max(math.sqrt(abs(gamma)) / (1 << num_truncate_bits), 1.0)
   else:
     qstep_init = 1.0
@@ -774,29 +1070,46 @@ def create_basic_model(
   logging.info('Preprocessor unet: %d', use_unet_preprocessor)
   logging.info('Postprocessor unet: %d', use_unet_postprocessor)
   if use_unet_preprocessor:
-    preprocessor_layer = basic_preprocessor_layer(
-        output_channels=bottleneck_channels,
-    )
+    if preprocessor_factory is not None:
+      preprocessor_layer = preprocessor_factory(
+          output_channels=bottleneck_channels, name='Preprocessor')
+    else:
+      preprocessor_layer = basic_preprocessor_layer(
+          output_channels=bottleneck_channels,
+      )
   else:
     preprocessor_layer = None
 
   if use_unet_postprocessor:
-    postprocessor_layer = basic_postprocessor_layer(
-        output_channels=output_channels,
-    )
+    if postprocessor_factory is not None:
+      postprocessor_layer = postprocessor_factory(
+          output_channels=output_channels, name='Postprocessor')
+    else:
+      postprocessor_layer = basic_postprocessor_layer(
+          output_channels=output_channels,
+      )
   else:
     postprocessor_layer = None
 
   # UNet for pre and postprocessing.
+  selected_rounding_fn = get_quantizer_fn(quantizer_mode)
   return PreprocessCompressPostprocess(
       model_keys=model_keys,
       preprocessor_layer=preprocessor_layer,
       postprocessor_layer=postprocessor_layer,
       intra_compression_layer=encode_decode_intra_lib.EncodeDecodeIntra(
-          rounding_fn=differentiable_round,
+          rounding_fn=selected_rounding_fn,
           use_jpeg_rate_model=use_jpeg_rate_model,
           qstep_init=qstep_init,
+          train_qstep=train_qstep,
           min_qstep=1,
+          rate_proxy_mode=rate_proxy_mode,
+          rate_proxy_grad_scale=rate_proxy_grad_scale,
+          codec_forward_mode=codec_forward_mode,
+          post_jpeg_int_round=post_jpeg_int_round,
+          output_clip_mode=output_clip_mode,
+          convert_to_yuv=convert_to_yuv,
+          downsample_chroma=downsample_chroma,
       ),  # PIL jpeg does not seem to distinguish qsteps 0 and 1.
       loop_filter_layer=loop_filter_layer,
       downsample_factor=downsample_factor,
@@ -805,6 +1118,7 @@ def create_basic_model(
       bottleneck_channels=bottleneck_channels,
       output_channels=output_channels,
       num_mlp_layers=num_mlp_layers,
+      sampling_mode=sampling_mode,
       model_config_thresholds=model_config_thresholds,
   )
 

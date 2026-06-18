@@ -1,0 +1,85 @@
+50 imgs from /workspace/sandwiched_compression/dpp/data/val50; qualities=[5, 8, 12, 20, 32]
+preprocessed: C_l10 (scaler n/a) <- dpp/runs/v2_C_l10/model.pt
+preprocessed: C_l20 (scaler n/a) <- dpp/runs/v2_C_l20/model.pt
+preprocessed: C_l40 (scaler n/a) <- dpp/runs/v2_C_l40/model.pt
+preprocessed: C_l80 (scaler n/a) <- dpp/runs/v2_C_l80/model.pt
+preprocessed: D_v01_l20 (scaler n/a) <- dpp/runs/v2_D_v01_l20/model.pt
+preprocessed: D_v03_l20 (scaler n/a) <- dpp/runs/v2_D_v03_l20/model.pt
+[baseline q=5] bpp=0.1353 psnr=24.39 msssim=0.87445
+[baseline q=8] bpp=0.1996 psnr=26.40 msssim=0.92279
+[baseline q=12] bpp=0.2780 psnr=27.92 msssim=0.95030
+[baseline q=20] bpp=0.4124 psnr=29.73 msssim=0.97287
+[baseline q=32] bpp=0.5819 psnr=31.19 msssim=0.98397
+[C_l10 q=5] bpp=0.1164 psnr=24.04 msssim=0.86510
+[C_l10 q=8] bpp=0.1655 psnr=25.74 msssim=0.91332
+[C_l10 q=12] bpp=0.2247 psnr=26.91 msssim=0.94080
+[C_l10 q=20] bpp=0.3240 psnr=28.10 msssim=0.96329
+[C_l10 q=32] bpp=0.4493 psnr=28.85 msssim=0.97447
+[C_l20 q=5] bpp=0.1083 psnr=23.77 msssim=0.85701
+[C_l20 q=8] bpp=0.1516 psnr=25.32 msssim=0.90446
+[C_l20 q=12] bpp=0.2040 psnr=26.31 msssim=0.93162
+[C_l20 q=20] bpp=0.2910 psnr=27.27 msssim=0.95377
+[C_l20 q=32] bpp=0.3992 psnr=27.83 msssim=0.96443
+[C_l40 q=5] bpp=0.0990 psnr=23.36 msssim=0.84148
+[C_l40 q=8] bpp=0.1348 psnr=24.68 msssim=0.88770
+[C_l40 q=12] bpp=0.1796 psnr=25.50 msssim=0.91410
+[C_l40 q=20] bpp=0.2548 psnr=26.21 msssim=0.93579
+[C_l40 q=32] bpp=0.3476 psnr=26.60 msssim=0.94621
+[C_l80 q=5] bpp=0.0868 psnr=22.17 msssim=0.80840
+[C_l80 q=8] bpp=0.1145 psnr=23.13 msssim=0.85253
+[C_l80 q=12] bpp=0.1493 psnr=23.62 msssim=0.87828
+[C_l80 q=20] bpp=0.2112 psnr=24.02 msssim=0.89818
+[C_l80 q=32] bpp=0.2895 psnr=24.22 msssim=0.90802
+[D_v01_l20 q=5] bpp=0.1088 psnr=23.80 msssim=0.85765
+[D_v01_l20 q=8] bpp=0.1526 psnr=25.37 msssim=0.90538
+[D_v01_l20 q=12] bpp=0.2057 psnr=26.37 msssim=0.93263
+[D_v01_l20 q=20] bpp=0.2941 psnr=27.37 msssim=0.95498
+[D_v01_l20 q=32] bpp=0.4046 psnr=27.95 msssim=0.96575
+[D_v03_l20 q=5] bpp=0.1109 psnr=23.89 msssim=0.86023
+[D_v03_l20 q=8] bpp=0.1568 psnr=25.50 msssim=0.90846
+[D_v03_l20 q=12] bpp=0.2126 psnr=26.57 msssim=0.93606
+[D_v03_l20 q=20] bpp=0.3061 psnr=27.65 msssim=0.95858
+[D_v03_l20 q=32] bpp=0.4238 psnr=28.31 msssim=0.96958
+[vmaf C_l10 q=5] vmaf=60.26 vmaf_neg=59.05 @ 0.1164bpp
+[vmaf baseline q=5] vmaf=71.91 vmaf_neg=69.70 @ 0.1353bpp
+[vmaf C_l10 q=8] vmaf=66.19 vmaf_neg=64.99 @ 0.1655bpp
+[vmaf baseline q=8] vmaf=81.85 vmaf_neg=79.51 @ 0.1996bpp
+[vmaf baseline q=12] vmaf=90.92 vmaf_neg=88.76 @ 0.2780bpp
+[vmaf C_l10 q=12] vmaf=71.84 vmaf_neg=70.73 @ 0.2247bpp
+[vmaf baseline q=20] vmaf=98.13 vmaf_neg=97.43 @ 0.4124bpp
+[vmaf baseline q=32] vmaf=99.16 vmaf_neg=99.06 @ 0.5819bpp
+[vmaf C_l20 q=5] vmaf=54.28 vmaf_neg=53.42 @ 0.1083bpp
+[vmaf C_l20 q=8] vmaf=58.30 vmaf_neg=57.44 @ 0.1516bpp
+[vmaf C_l10 q=20] vmaf=78.15 vmaf_neg=77.21 @ 0.3240bpp
+[vmaf C_l20 q=12] vmaf=62.10 vmaf_neg=61.31 @ 0.2040bpp
+[vmaf C_l40 q=5] vmaf=47.36 vmaf_neg=46.85 @ 0.0990bpp
+[vmaf C_l10 q=32] vmaf=82.15 vmaf_neg=81.40 @ 0.4493bpp
+[vmaf C_l20 q=20] vmaf=66.38 vmaf_neg=65.71 @ 0.2910bpp
+[vmaf C_l20 q=32] vmaf=69.11 vmaf_neg=68.55 @ 0.3992bpp
+[vmaf C_l40 q=8] vmaf=49.20 vmaf_neg=48.70 @ 0.1348bpp
+[vmaf C_l80 q=5] vmaf=39.26 vmaf_neg=39.12 @ 0.0868bpp
+[vmaf C_l40 q=12] vmaf=51.19 vmaf_neg=50.74 @ 0.1796bpp
+[vmaf C_l80 q=8] vmaf=38.96 vmaf_neg=38.80 @ 0.1145bpp
+[vmaf C_l40 q=20] vmaf=53.44 vmaf_neg=53.05 @ 0.2548bpp
+[vmaf C_l80 q=12] vmaf=38.93 vmaf_neg=38.78 @ 0.1493bpp
+[vmaf C_l40 q=32] vmaf=54.86 vmaf_neg=54.52 @ 0.3476bpp
+[vmaf C_l80 q=20] vmaf=39.29 vmaf_neg=39.14 @ 0.2112bpp
+[vmaf D_v01_l20 q=5] vmaf=54.62 vmaf_neg=53.74 @ 0.1088bpp
+[vmaf D_v01_l20 q=8] vmaf=58.83 vmaf_neg=57.96 @ 0.1526bpp
+[vmaf C_l80 q=32] vmaf=39.58 vmaf_neg=39.44 @ 0.2895bpp
+[vmaf D_v01_l20 q=12] vmaf=62.73 vmaf_neg=61.94 @ 0.2057bpp
+[vmaf D_v03_l20 q=5] vmaf=56.47 vmaf_neg=55.50 @ 0.1109bpp
+[vmaf D_v01_l20 q=20] vmaf=67.22 vmaf_neg=66.55 @ 0.2941bpp
+[vmaf D_v03_l20 q=8] vmaf=61.19 vmaf_neg=60.25 @ 0.1568bpp
+[vmaf D_v01_l20 q=32] vmaf=70.07 vmaf_neg=69.54 @ 0.4046bpp
+[vmaf D_v03_l20 q=12] vmaf=65.75 vmaf_neg=64.89 @ 0.2126bpp
+[vmaf D_v03_l20 q=20] vmaf=70.97 vmaf_neg=70.24 @ 0.3061bpp
+[vmaf D_v03_l20 q=32] vmaf=74.31 vmaf_neg=73.74 @ 0.4238bpp
+=== C_l10: BD-rate%% (neg=win) PSNR=+1.87 MSSSIM=-7.71 VMAF=+85.69 VMAF_NEG=+74.64 | maxPSNRdrop=+2.33dB
+=== C_l20: BD-rate%% (neg=win) PSNR=+4.87 MSSSIM=-6.93 VMAF=+nan VMAF_NEG=+nan | maxPSNRdrop=+3.36dB
+=== C_l40: BD-rate%% (neg=win) PSNR=+11.80 MSSSIM=-1.08 VMAF=+nan VMAF_NEG=+nan | maxPSNRdrop=+4.59dB
+=== C_l80: BD-rate%% (neg=win) PSNR=+nan MSSSIM=+22.83 VMAF=+nan VMAF_NEG=+nan | maxPSNRdrop=+6.97dB
+=== D_v01_l20: BD-rate%% (neg=win) PSNR=+4.31 MSSSIM=-7.21 VMAF=+nan VMAF_NEG=+nan | maxPSNRdrop=+3.24dB
+=== D_v03_l20: BD-rate%% (neg=win) PSNR=+3.35 MSSSIM=-7.71 VMAF=+164.65 VMAF_NEG=+138.67 | maxPSNRdrop=+2.88dB
+=== ENVELOPE(all): bd_rgb_psnr=+7.14 bd_msssim=-5.07 bd_vmaf=+85.69 bd_vmaf_neg=+74.61
+saved dpp/runs/eval_v2_1b.json

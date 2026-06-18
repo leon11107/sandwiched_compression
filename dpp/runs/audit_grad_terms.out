@@ -1,0 +1,5 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading pretrained model NIMA from /root/.cache/torch/hub/pyiqa/NIMA_koniq-250367ae.pth
+q 32 [noise_injection]  distortion=+0.159  rate=+0.064  perceptual(NIMA)=+0.107   (cosine proxy vs real, n=6)
+q 64 [noise_injection]  distortion=-0.100  rate=+0.228  perceptual(NIMA)=+0.013   (cosine proxy vs real, n=6)
+q 96 [noise_injection]  distortion=+0.058  rate=+0.129  perceptual(NIMA)=+0.143   (cosine proxy vs real, n=6)

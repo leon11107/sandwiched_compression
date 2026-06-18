@@ -1,0 +1,26 @@
+20 oracle jobs (imgs=10, gens=25, pop=32)
+[img05 q8] base 77.23@0.1222 -> oracle 38.33@0.1374 | iso-bpp delta = -41.44 (gen 23)
+[img04 q8] base 82.53@0.1198 -> oracle 44.71@0.1270 | iso-bpp delta = -38.99 (gen 22)
+[img02 q8] base 74.53@0.1368 -> oracle 47.58@0.1446 | iso-bpp delta = -29.17 (gen 23)
+[img00 q8] base 33.41@0.2683 -> oracle 38.52@0.3029 | iso-bpp delta = +2.03 (gen 21)
+[img01 q8] base 82.14@0.1480 -> oracle 52.42@0.1552 | iso-bpp delta = -30.97 (gen 23)
+[img06 q8] base 74.51@0.1758 -> oracle 41.23@0.1898 | iso-bpp delta = -35.33 (gen 24)
+[img03 q8] base 79.39@0.3018 -> oracle 45.77@0.3177 | iso-bpp delta = -34.90 (gen 24)
+[img08 q8] base 70.09@0.2946 -> oracle 36.67@0.3168 | iso-bpp delta = -35.06 (gen 24)
+[img07 q8] base 73.79@0.1706 -> oracle 42.42@0.1825 | iso-bpp delta = -33.29 (gen 24)
+[img09 q8] base 82.84@0.1523 -> oracle 44.75@0.1648 | iso-bpp delta = -39.87 (gen 24)
+[img01 q20] base 100.00@0.3021 -> oracle 74.72@0.3127 | iso-bpp delta = -25.28 (gen 24)
+[img00 q20] base 57.11@0.5659 -> oracle 59.83@0.6005 | iso-bpp delta = +0.97 (gen 24)
+[img02 q20] base 100.00@0.2672 -> oracle 72.29@0.2746 | iso-bpp delta = -27.71 (gen 22)
+[img03 q20] base 100.00@0.6432 -> oracle 70.97@0.6864 | iso-bpp delta = -29.03 (gen 23)
+[img04 q20] base 99.96@0.2550 -> oracle 68.51@0.2734 | iso-bpp delta = -31.45 (gen 23)
+[img05 q20] base 97.46@0.2527 -> oracle 63.30@0.2702 | iso-bpp delta = -34.58 (gen 24)
+[img08 q20] base 90.08@0.5795 -> oracle 56.74@0.6059 | iso-bpp delta = -34.55 (gen 22)
+[img06 q20] base 99.87@0.3948 -> oracle 67.58@0.4175 | iso-bpp delta = -32.31 (gen 23)
+[img07 q20] base 99.49@0.3597 -> oracle 69.10@0.3792 | iso-bpp delta = -30.45 (gen 22)
+[img09 q20] base 100.00@0.3311 -> oracle 69.87@0.3498 | iso-bpp delta = -30.13 (gen 17)
+
+=== ORACLE VERDICT (iso-bpp VMAF_NEG delta, >0 = preprocessing CAN win) ===
+  q=8: mean -31.70  median -34.98  min -41.44  max +2.03  positive 1/10
+  q=20: mean -27.45  median -30.29  min -34.58  max +0.97  positive 1/10
+saved dpp/runs/oracle_vmafneg.json

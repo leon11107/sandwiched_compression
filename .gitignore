@@ -1,0 +1,29 @@
+# --- large data / regenerable / backed up to B2 (keep .git lean) ---
+experiments/
+dpp/data/
+instances/
+vimeo90k_triplet/
+
+# trained model weights & video/raw artifacts (on B2, too big for git)
+*.pt
+*.pth
+*.npz
+*.y4m
+*.mp4
+*.webm
+
+# papers (downloadable; on B2)
+*.pdf
+
+# per-step training logs / data dumps (regenerable; on B2). .json summaries kept.
+*.jsonl
+
+# embedded external repo clone
+reference/Diff-JPEG/
+
+# python caches / scratch
+__pycache__/
+*.pyc
+*.pyo
+*.log
+.ipynb_checkpoints/

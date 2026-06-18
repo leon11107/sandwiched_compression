@@ -1,0 +1,37 @@
+50 imgs from /workspace/sandwiched_compression/dpp/data/val50; qualities=[5, 8, 12, 20, 32]
+preprocessed: C_l05 (scaler n/a) <- dpp/runs/v2_C_l05/model.pt
+preprocessed: C_l075 (scaler n/a) <- dpp/runs/v2_C_l075/model.pt
+[baseline q=5] bpp=0.1353 psnr=24.39 msssim=0.87445
+[baseline q=8] bpp=0.1996 psnr=26.40 msssim=0.92279
+[baseline q=12] bpp=0.2780 psnr=27.92 msssim=0.95030
+[baseline q=20] bpp=0.4124 psnr=29.73 msssim=0.97287
+[baseline q=32] bpp=0.5819 psnr=31.19 msssim=0.98397
+[C_l05 q=5] bpp=0.1220 psnr=24.19 msssim=0.86927
+[C_l05 q=8] bpp=0.1754 psnr=26.01 msssim=0.91784
+[C_l05 q=12] bpp=0.2402 psnr=27.31 msssim=0.94541
+[C_l05 q=20] bpp=0.3502 psnr=28.70 msssim=0.96807
+[C_l05 q=32] bpp=0.4889 psnr=29.63 msssim=0.97922
+[C_l075 q=5] bpp=0.1190 psnr=24.11 msssim=0.86725
+[C_l075 q=8] bpp=0.1700 psnr=25.88 msssim=0.91567
+[C_l075 q=12] bpp=0.2314 psnr=27.10 msssim=0.94314
+[C_l075 q=20] bpp=0.3351 psnr=28.38 msssim=0.96570
+[C_l075 q=32] bpp=0.4658 psnr=29.21 msssim=0.97680
+[vmaf C_l05 q=5] vmaf=64.10 vmaf_neg=62.65 @ 0.1220bpp
+[vmaf baseline q=5] vmaf=71.91 vmaf_neg=69.70 @ 0.1353bpp
+[vmaf C_l05 q=8] vmaf=71.56 vmaf_neg=70.09 @ 0.1754bpp
+[vmaf baseline q=8] vmaf=81.85 vmaf_neg=79.51 @ 0.1996bpp
+[vmaf C_l05 q=12] vmaf=78.51 vmaf_neg=77.13 @ 0.2402bpp
+[vmaf baseline q=12] vmaf=90.92 vmaf_neg=88.76 @ 0.2780bpp
+[vmaf baseline q=20] vmaf=98.13 vmaf_neg=97.43 @ 0.4124bpp
+[vmaf baseline q=32] vmaf=99.16 vmaf_neg=99.06 @ 0.5819bpp
+[vmaf C_l075 q=5] vmaf=62.25 vmaf_neg=60.92 @ 0.1190bpp
+[vmaf C_l075 q=8] vmaf=68.87 vmaf_neg=67.55 @ 0.1700bpp
+[vmaf C_l05 q=20] vmaf=86.21 vmaf_neg=85.03 @ 0.3502bpp
+[vmaf C_l075 q=12] vmaf=75.15 vmaf_neg=73.94 @ 0.2314bpp
+[vmaf C_l05 q=32] vmaf=91.05 vmaf_neg=90.21 @ 0.4889bpp
+[vmaf C_l075 q=20] vmaf=82.04 vmaf_neg=81.01 @ 0.3351bpp
+[vmaf C_l075 q=32] vmaf=86.50 vmaf_neg=85.69 @ 0.4658bpp
+=== C_l05: BD-rate%% (neg=win) PSNR=+0.07 MSSSIM=-7.01 VMAF=+44.01 VMAF_NEG=+38.32 | maxPSNRdrop=+1.56dB
+=== C_l075: BD-rate%% (neg=win) PSNR=+0.74 MSSSIM=-7.66 VMAF=+61.84 VMAF_NEG=+53.85 | maxPSNRdrop=+1.98dB
+=== ENVELOPE(all): bd_rgb_psnr=+2.45 bd_msssim=-6.72 bd_vmaf=+57.80 bd_vmaf_neg=+50.05
+saved dpp/runs/eval_v2_lowlam.json

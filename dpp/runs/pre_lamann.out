@@ -1,0 +1,10 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading pretrained model NIMA from /root/.cache/torch/hub/pyiqa/NIMA_koniq-250367ae.pth
+[balle] Balle-rate DPP: gamma=0.01 lam=0.02 perceptual=nima-koniq ch=64 ep=3
+/workspace/sandwiched_compression/dpp/train_balle.py:130: UserWarning: Converting a tensor with requires_grad=True to a scalar may lead to unexpected behavior.
+Consider using tensor.detach() first. (Triggered internally at /pytorch/torch/csrc/autograd/generated/python_variable_methods.cpp:835.)
+  acc["LF"] += float(LF); acc["MOS"] += float(mos_val); acc["VIF"] += float(vif_val)
+ep  0/3 LF=0.0284 MOS=0.3653 VIF=0.0000 BalleBpp=5.278 lam=0.0800 total=0.4471 gnorm=0.170 scaler=0.0055 | [diag q32] base PSNR=34.21@0.745 model PSNR=33.97@0.773 (23s)
+ep  1/3 LF=0.0297 MOS=0.3679 VIF=0.0000 BalleBpp=5.057 lam=0.0742 total=0.4017 gnorm=0.402 scaler=0.0078 | [diag q32] base PSNR=34.21@0.745 model PSNR=32.16@0.894 (22s)
+ep  2/3 LF=0.0299 MOS=0.3703 VIF=0.0000 BalleBpp=4.882 lam=0.0411 total=0.2271 gnorm=0.487 scaler=0.0091 | [diag q32] base PSNR=34.21@0.745 model PSNR=31.61@0.952 (22s)
+[balle] done -> dpp/runs/pre_lamann/model.pt

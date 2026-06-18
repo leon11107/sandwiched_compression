@@ -1,0 +1,12 @@
+96 variants (12 imgs). Candidate FR metric SRCC vs VMAF_NEG:
+  vif        SRCC_pool=+0.767 SRCC_perimg=+0.800
+Loading pretrained model DISTS from /root/.cache/torch/hub/pyiqa/DISTS_weights-f5e65c96.pth
+  dists      SRCC_pool=+0.682 SRCC_perimg=+0.798
+/venv/torch-env/lib/python3.11/site-packages/timm/models/layers/__init__.py:49: FutureWarning: Importing from timm.models.layers is deprecated, please import via timm.layers
+  warnings.warn(f"Importing from {__name__} is deprecated, please import via timm.layers", FutureWarning)
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading pretrained model CFANet from /root/.cache/torch/hub/pyiqa/cfanet_fr_kadid_res50-2c4cc61d.pth
+  topiq_fr   SRCC_pool=+0.702 SRCC_perimg=+0.756
+Loading pretrained model LPIPS from /root/.cache/torch/hub/pyiqa/LPIPS_v0.1_vgg-a78928a0.pth
+  lpips-vgg  SRCC_pool=+0.577 SRCC_perimg=+0.710
+(VMAF_NEG range: 43.4..93.9)

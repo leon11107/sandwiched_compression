@@ -1,0 +1,26 @@
+/workspace/sandwiched_compression/dpp/pretrain_prior_aligned.py:45: UserWarning: Converting a tensor with requires_grad=True to a scalar may lead to unexpected behavior.
+Consider using tensor.detach() first. (Triggered internally at /pytorch/torch/csrc/autograd/generated/python_variable_methods.cpp:835.)
+  run += float(bpp); n += 1
+  step 250/4000 est_luma_bpp=4.2950 (3s)
+  step 500/4000 est_luma_bpp=2.4654 (4s)
+  step 750/4000 est_luma_bpp=1.3617 (6s)
+  step 1000/4000 est_luma_bpp=0.9399 (8s)
+  step 1250/4000 est_luma_bpp=0.7867 (9s)
+  step 1500/4000 est_luma_bpp=0.7162 (11s)
+  step 1750/4000 est_luma_bpp=0.6725 (13s)
+  step 2000/4000 est_luma_bpp=0.6639 (14s)
+  step 2250/4000 est_luma_bpp=0.6339 (15s)
+  step 2500/4000 est_luma_bpp=0.6343 (17s)
+  step 2750/4000 est_luma_bpp=0.6133 (18s)
+  step 3000/4000 est_luma_bpp=0.6098 (19s)
+  step 3250/4000 est_luma_bpp=0.6070 (21s)
+  step 3500/4000 est_luma_bpp=0.5890 (22s)
+  step 3750/4000 est_luma_bpp=0.5878 (23s)
+  step 4000/4000 est_luma_bpp=0.5960 (25s)
+saved /workspace/sandwiched_compression/dpp/runs/prior_aligned/entropy.pt
+== calibration: frozen-prior est luma bpp vs real total bpp ==
+  q=  5 est_luma=0.3664 real_total=0.1289 ratio=2.844
+  q=  8 est_luma=0.3935 real_total=0.1890 ratio=2.082
+  q= 12 est_luma=0.4391 real_total=0.2650 ratio=1.657
+  q= 20 est_luma=0.5507 real_total=0.3951 ratio=1.394
+  q= 32 est_luma=0.7457 real_total=0.5618 ratio=1.327

@@ -58,7 +58,6 @@ def _encode_decode_with_jpeg(
     img.save(
         buf,
         format='jpeg',
-        quality=100,
         optimize=True,
         qtables=[qtable, qtable, qtable],
         subsampling='4:2:0' if use_420 else '4:4:4',
@@ -165,6 +164,11 @@ class EncodeDecodeIntra(tf.keras.Model):
       jpeg_clip_to_image_max: bool = True,
       convert_to_yuv: bool = False,
       downsample_chroma: bool = False,
+      rate_proxy_mode: str = "log_nonzero",
+      rate_proxy_grad_scale: float = 1.0,
+      codec_forward_mode: str = "proxy",
+      post_jpeg_int_round: bool = False,
+      output_clip_mode: str = "hard",
   ):
     """Constructor.
 
@@ -192,21 +196,38 @@ class EncodeDecodeIntra(tf.keras.Model):
 
     self.train_qstep = train_qstep
     if self.train_qstep:
-      self.qstep = tf.Variable(
-          initial_value=qstep_init,
+      self.qstep = self.add_weight(
+          shape=(),
+          initializer=tf.constant_initializer(qstep_init),
           trainable=True,
           name='qstep',
           dtype=tf.float32)
     else:
       self.qstep = tf.cast(qstep_init, tf.float32)
 
-    self.min_qstep = tf.Variable(
-        initial_value=min_qstep,
+    self.min_qstep = self.add_weight(
+        shape=(),
+        initializer=tf.constant_initializer(min_qstep),
         trainable=False,
         name='min_qstep',
         dtype=tf.float32)
 
-    self.clip_to_image_max = jpeg_clip_to_image_max
+    # output_clip_mode controls how the final pixel-domain clip to [0, image_max]
+    # is implemented:
+    #   "hard"      : tf.clip_by_value (zero gradient outside) — historical default.
+    #                 Implemented inside JpegProxy via clip_to_image_max=True.
+    #   "soft"      : differentiable leaky clip (γ=1e-3) from Reich et al. WACV 2024.
+    #   "ste_leaky" : STE clip — forward exact clip, backward 1 inside, γ outside.
+    #   "none"      : no output clip at all.
+    # For non-"hard" modes the JpegProxy's internal clip is disabled and the
+    # configured clip is applied here in _encode_decode_jpeg.
+    if output_clip_mode not in ("hard", "soft", "ste_leaky", "none"):
+      raise ValueError(f"unknown output_clip_mode {output_clip_mode!r}")
+    self._output_clip_mode = output_clip_mode
+    if output_clip_mode == "hard":
+      self.clip_to_image_max = jpeg_clip_to_image_max
+    else:
+      self.clip_to_image_max = False
 
     def _quantizer_fn(x: tf.Tensor) -> tf.Tensor:
       """Implements quantize-dequantize with the trainable qstep."""
@@ -215,6 +236,22 @@ class EncodeDecodeIntra(tf.keras.Model):
 
     self._jpeg_quantizer_fn = _quantizer_fn
     self._rounding_fn = rounding_fn
+    if rate_proxy_mode not in (
+        "log_nonzero",
+        "multifeature",
+        "jpeg_symbol_nonneg",
+        "jpeg_symbol_banded_nonneg",
+    ):
+      raise ValueError(f"unknown rate_proxy_mode {rate_proxy_mode!r}")
+    self._rate_proxy_mode = rate_proxy_mode
+    self._rate_proxy_grad_scale = float(rate_proxy_grad_scale)
+    if codec_forward_mode not in ("proxy", "real_ste"):
+      raise ValueError(f"unknown codec_forward_mode {codec_forward_mode!r}")
+    self._codec_forward_mode = codec_forward_mode
+    # Match inference: real JPEG decoder outputs uint8 pixels.
+    # When True, round dequantized pixels to integers with STE so postprocessor
+    # sees inference-faithful integer-valued floats during training.
+    self._post_jpeg_int_round = post_jpeg_int_round
 
     def add_variable_conditionally(
         variable_name: str, condition: Optional[bool] = None
@@ -356,6 +393,162 @@ class EncodeDecodeIntra(tf.keras.Model):
       jpeg_rate.set_shape(three_channel_inputs.shape[0])
       return jpeg_decoded, jpeg_rate
 
+    def per_sample_sum(value_fn):
+      """Sum value_fn(coef) over all DCT coefficients per sample."""
+      total = tf.zeros(tf.shape(three_channel_inputs)[0])
+      for k in dequantized_dct_coeffs:
+        total += tf.math.reduce_sum(
+            tf.reshape(
+                value_fn(dequantized_dct_coeffs[k]),
+                [tf.shape(three_channel_inputs)[0], -1],
+            ),
+            axis=1,
+        )
+      return tf.cast(total, dtype=tf.float32)
+
+    def jpeg_symbol_cost() -> tf.Tensor:
+      """Non-negative differentiable proxy for JPEG entropy-symbol cost.
+
+      Forward rate is still corrected to the exact PIL JPEG bit count below.
+      This cost only controls the backward direction. It approximates JPEG
+      entropy coding with soft nonzero decisions, soft magnitude categories,
+      and a mild frequency-dependent nonzero cost for AC run-length coding.
+      """
+      thresholds = tf.constant(
+          [0.5, 1.5, 3.5, 7.5, 15.5, 31.5, 63.5, 127.5],
+          dtype=tf.float32,
+      )
+      thresholds = tf.reshape(thresholds, [1, 1, 1, 1, -1])
+      freq = np.asarray(
+          [(idx // 8 + idx % 8) / 14.0 for idx in range(64)],
+          dtype=np.float32,
+      )
+      freq = tf.reshape(tf.constant(freq, dtype=tf.float32), [1, 1, 1, 64])
+      # Keep this finite: very large slopes turn into a hard threshold and lose
+      # the useful gradient exactly where real JPEG changes bitstream symbols.
+      slope = tf.constant(4.0, dtype=tf.float32)
+
+      def symbol_value(coef: tf.Tensor) -> tf.Tensor:
+        q_abs = tf.math.abs(coef / qstep_pos)
+        soft_nonzero = tf.sigmoid(slope * (q_abs - 0.5))
+        # JPEG magnitude category ~= floor(log2(abs(q_index))) + 1 for nonzero
+        # coefficients. Summed soft thresholds approximate this integer count.
+        soft_category_bits = tf.reduce_sum(
+            tf.sigmoid(slope * (tf.expand_dims(q_abs, axis=-1) - thresholds)),
+            axis=-1,
+        )
+        # High-frequency nonzeros tend to be more expensive because they break
+        # longer AC zero runs. The factor is deliberately mild and non-negative.
+        run_cost = soft_nonzero * (1.0 + 0.75 * freq)
+        magnitude_cost = soft_category_bits * (1.0 + 0.25 * freq)
+        return run_cost + magnitude_cost
+
+      return per_sample_sum(symbol_value) + 1.0
+
+    def jpeg_symbol_banded_features() -> tf.Tensor:
+      """Block/frequency-banded JPEG symbol features.
+
+      Returns a non-negative [batch, features] matrix whose columns approximate
+      separate JPEG entropy costs: DC category, AC nonzero and magnitude costs
+      in low/mid/high frequency bands, plus a soft AC run-break cost.
+      """
+      thresholds = tf.constant(
+          [0.5, 1.5, 3.5, 7.5, 15.5, 31.5, 63.5, 127.5],
+          dtype=tf.float32,
+      )
+      thresholds = tf.reshape(thresholds, [1, 1, 1, 1, -1])
+      zigzag = tf.constant(
+          [
+              0, 1, 8, 16, 9, 2, 3, 10,
+              17, 24, 32, 25, 18, 11, 4, 5,
+              12, 19, 26, 33, 40, 48, 41, 34,
+              27, 20, 13, 6, 7, 14, 21, 28,
+              35, 42, 49, 56, 57, 50, 43, 36,
+              29, 22, 15, 23, 30, 37, 44, 51,
+              58, 59, 52, 45, 38, 31, 39, 46,
+              53, 60, 61, 54, 47, 55, 62, 63,
+          ],
+          dtype=tf.int32,
+      )
+      freq_sum = np.asarray(
+          [idx // 8 + idx % 8 for idx in range(64)], dtype=np.float32
+      )
+      freq_sum_z = tf.gather(tf.constant(freq_sum, dtype=tf.float32), zigzag)
+      ac_freq = freq_sum_z[1:]
+      low_mask = tf.reshape(
+          tf.cast(tf.logical_and(ac_freq <= 2.0, ac_freq > 0.0), tf.float32),
+          [1, 1, 1, 63],
+      )
+      mid_mask = tf.reshape(
+          tf.cast(tf.logical_and(ac_freq > 2.0, ac_freq <= 5.0), tf.float32),
+          [1, 1, 1, 63],
+      )
+      high_mask = tf.reshape(tf.cast(ac_freq > 5.0, tf.float32), [1, 1, 1, 63])
+      slope = tf.constant(4.0, dtype=tf.float32)
+
+      total = None
+      for k in dequantized_dct_coeffs:
+        q_abs = tf.math.abs(dequantized_dct_coeffs[k] / qstep_pos)
+        q_abs_z = tf.gather(q_abs, zigzag, axis=-1)
+        soft_nonzero = tf.sigmoid(slope * (q_abs_z - 0.5))
+        soft_category_bits = tf.reduce_sum(
+            tf.sigmoid(slope * (tf.expand_dims(q_abs_z, axis=-1) - thresholds)),
+            axis=-1,
+        )
+        dc_category = soft_category_bits[..., 0]
+        ac_nonzero = soft_nonzero[..., 1:]
+        ac_category = soft_category_bits[..., 1:]
+        preceding_soft_zero = tf.cumsum(
+            1.0 - ac_nonzero, axis=-1, exclusive=True
+        ) / 63.0
+        run_break = ac_nonzero * preceding_soft_zero
+
+        def sample_sum(value: tf.Tensor) -> tf.Tensor:
+          return tf.reduce_sum(tf.reshape(value, [tf.shape(value)[0], -1]), axis=1)
+
+        channel_features = tf.stack(
+            [
+                sample_sum(dc_category),
+                sample_sum(ac_nonzero * low_mask),
+                sample_sum(ac_nonzero * mid_mask),
+                sample_sum(ac_nonzero * high_mask),
+                sample_sum(ac_category * low_mask),
+                sample_sum(ac_category * mid_mask),
+                sample_sum(ac_category * high_mask),
+                sample_sum(run_break),
+            ],
+            axis=1,
+        )
+        total = channel_features if total is None else total + channel_features
+      return tf.cast(total + 1e-6, dtype=tf.float32)
+
+    def forward_corrected_rate(predicted: tf.Tensor) -> tf.Tensor:
+      """Forward exact real JPEG bits, backward scaled surrogate gradient."""
+      scaled_predicted = self._rate_proxy_grad_scale * predicted
+      correction = tf.stop_gradient(jpeg_rate - scaled_predicted)
+      return scaled_predicted + correction
+
+    def nnls_forward_corrected_rate(features: tf.Tensor) -> tf.Tensor:
+      """Non-negative batch fit with exact-real-rate forward correction."""
+      target = tf.reshape(jpeg_rate, [-1, 1])
+      feature_scales = tf.reduce_mean(features, axis=0, keepdims=True) + 1.0
+      f = features / feature_scales
+      num_features = tf.shape(f)[1]
+      target_mean = tf.reduce_mean(target) + 1.0
+      w = tf.ones([num_features, 1], dtype=tf.float32) * (
+          target_mean / tf.cast(num_features, tf.float32)
+      )
+      ft = tf.transpose(f)
+      # Multiplicative-update NNLS: keeps weights non-negative and avoids the
+      # negative-gradient failures we observed with unconstrained least squares.
+      for _ in range(12):
+        numerator = tf.matmul(ft, target) + 1e-3
+        denominator = tf.matmul(tf.matmul(ft, f), w) + 1e-3
+        w = w * numerator / denominator
+      w = tf.stop_gradient(w)
+      predicted = tf.reshape(tf.matmul(f, w), [-1])
+      return forward_corrected_rate(predicted)
+
     ###########################################################################
     # Jpeg-specific model fits rate using number of nonzero dct coefficients.
     # For details see:
@@ -367,23 +560,61 @@ class EncodeDecodeIntra(tf.keras.Model):
     # rate ~= weight * num_nonzero, return rate approximation as weight *
     # num_nonzero.
     ###########################################################################
-
-    # First pair using current qstep. (May consider fitting to a batch instead.)
-    num_nonzero_dct_coeffs = calculate_non_zeros(dequantized_dct_coeffs,
-                                                 self._positive_qstep())
     _, jpeg_rate = encode_decode_inputs_with_jpeg()
+    qstep_pos = self._positive_qstep()
 
-    nonzero_times_rate = tf.math.multiply(num_nonzero_dct_coeffs, jpeg_rate)
-    nonzero_times_nonzero = tf.math.multiply(num_nonzero_dct_coeffs,
-                                             num_nonzero_dct_coeffs)
+    if self._rate_proxy_mode == "log_nonzero":
+      # Single-feature per-sample linear fit (original behaviour).
+      num_nonzero_dct_coeffs = calculate_non_zeros(
+          dequantized_dct_coeffs, qstep_pos
+      )
+      nonzero_times_rate = tf.math.multiply(num_nonzero_dct_coeffs, jpeg_rate)
+      nonzero_times_nonzero = tf.math.multiply(
+          num_nonzero_dct_coeffs, num_nonzero_dct_coeffs
+      )
+      line_weights = tf.stop_gradient(
+          tf.math.divide(nonzero_times_rate, nonzero_times_nonzero + 1)
+      )
+      return tf.math.multiply(num_nonzero_dct_coeffs, line_weights)
 
-    # This is in effect a fit within the main training using a different loss
-    # function whose solution is known. Stop the gradients that may confuse
-    # the optimizer.
-    line_weights = tf.stop_gradient(
-        tf.math.divide(nonzero_times_rate, nonzero_times_nonzero + 1))
+    if self._rate_proxy_mode == "jpeg_symbol_nonneg":
+      # Per-sample non-negative scalar calibration. Forward is exact real JPEG
+      # rate via stop-gradient correction; backward follows jpeg_symbol_cost().
+      cost = jpeg_symbol_cost()
+      scale = tf.stop_gradient(tf.math.divide(jpeg_rate, cost + 1.0))
+      predicted = cost * scale
+      return forward_corrected_rate(predicted)
 
-    return tf.math.multiply(num_nonzero_dct_coeffs, line_weights)
+    if self._rate_proxy_mode == "jpeg_symbol_banded_nonneg":
+      return nnls_forward_corrected_rate(jpeg_symbol_banded_features())
+
+    # rate_proxy_mode == "multifeature":
+    # Three sample-level features capturing different magnitude scales:
+    #   f1 = Σ log(1 + |c|/q)         (original; ~ count + log-magnitude)
+    #   f2 = Σ |c|/q                  (linear magnitude — Huffman value bits)
+    #   f3 = Σ sqrt(|c|/q)            (intermediate scale; sub-linear)
+    # Per-BATCH least-squares fit  jpeg_rate ≈ F @ w  with w stopped-gradient,
+    # then forward-correct so per-sample forward = real jpeg_rate exactly while
+    # gradient is the differentiable surrogate F @ w.
+    f1 = per_sample_sum(lambda c: tf.math.log(1.0 + tf.math.abs(c / qstep_pos)))
+    f2 = per_sample_sum(lambda c: tf.math.abs(c / qstep_pos))
+    f3 = per_sample_sum(lambda c: tf.math.sqrt(tf.math.abs(c / qstep_pos) + 1e-8))
+    features = tf.stack([f1, f2, f3], axis=1)  # [B, 3]
+    target = tf.reshape(jpeg_rate, [-1, 1])    # [B, 1]
+    # Normalize columns to avoid scale-driven ill-conditioning, then solve
+    # with Tikhonov regularization. `fast=False` (orthogonal decomposition)
+    # is numerically more robust than the default Cholesky-based path when
+    # the system happens to be near-singular for very small batches.
+    feature_scales = tf.reduce_mean(features, axis=0, keepdims=True) + 1.0
+    features_normalized = features / feature_scales
+    weights_normalized = tf.linalg.lstsq(
+        features_normalized, target, l2_regularizer=1e-3, fast=False
+    )  # [3, 1]
+    weights_normalized = tf.stop_gradient(weights_normalized)
+    predicted = tf.reshape(features_normalized @ weights_normalized, [-1])  # [B]
+    # Forward correction so per-sample forward equals real jpeg_rate while
+    # gradient comes from `predicted` (which depends on the three features).
+    return forward_corrected_rate(predicted)
 
   def is_codec_proxy_420(self) -> tf.Tensor:
     return self.run_jpeg_with_downsampled_chroma
@@ -427,8 +658,57 @@ class EncodeDecodeIntra(tf.keras.Model):
         three_channel_inputs, self._jpeg_quantizer_fn, image_max=image_max
     )
 
-    # May consider adding self._rounding_fn(dequantized_three_channels) if
-    # desired.
+    # Match inference behaviour: real JPEG decoder returns uint8 pixels.
+    # Without this, training postprocessor sees continuous floats while
+    # inference postprocessor receives integer floats — a train/inference
+    # mismatch. Use STE round so backward gradient still flows.
+    if self._post_jpeg_int_round:
+      rounded = tf.round(dequantized_three_channels)
+      dequantized_three_channels = (
+          dequantized_three_channels
+          + tf.stop_gradient(rounded - dequantized_three_channels)
+      )
+
+    # Differentiable output clip to [0, image_max] when not using the
+    # JpegProxy's internal hard clip. soft = leaky linear (γ=1e-3); ste_leaky
+    # = forward exact clip / backward 1 inside, γ outside (Reich et al.).
+    if self._output_clip_mode in ("soft", "ste_leaky"):
+      from image_compression import diff_jpeg_tf  # avoid import at module load
+      hi = tf.cast(image_max, dequantized_three_channels.dtype)
+      if self._output_clip_mode == "soft":
+        dequantized_three_channels = diff_jpeg_tf.soft_clip(
+            dequantized_three_channels, lo=0.0, hi=hi, leak=1e-3
+        )
+      else:  # ste_leaky
+        dequantized_three_channels = diff_jpeg_tf.ste_clip(
+            dequantized_three_channels, lo=0.0, hi=hi, leak=1e-3
+        )
+
+    # Codec-level STE: forward replaces the proxy-decoded output with the
+    # actual PIL JPEG-decoded output, while backward still flows through the
+    # differentiable proxy path. This makes the wrapper see inference-faithful
+    # quantization noise during training while keeping a usable gradient.
+    if self._codec_forward_mode == "real_ste":
+      use_420 = tf.cond(
+          self.run_jpeg_one_channel_at_a_time,
+          lambda: tf.convert_to_tensor(False, dtype=tf.bool),
+          lambda: self.run_jpeg_with_downsampled_chroma,
+      )
+      real_decoded, _real_bits = tf.numpy_function(
+          _encode_decode_with_jpeg,
+          inp=[
+              three_channel_inputs,
+              self._positive_qstep(),
+              self.run_jpeg_one_channel_at_a_time,
+              use_420,
+          ],
+          Tout=[tf.float32, tf.float32],
+      )
+      real_decoded.set_shape(three_channel_inputs.shape)
+      dequantized_three_channels = (
+          dequantized_three_channels
+          + tf.stop_gradient(real_decoded - dequantized_three_channels)
+      )
 
     # Remove padding.
     if pad_dim:
@@ -452,14 +732,17 @@ class EncodeDecodeIntra(tf.keras.Model):
           self.run_jpeg_one_channel_at_a_time,
           self.run_jpeg_with_downsampled_chroma
       )
-      if conversion_to_420_needed:
-        # Ensure that the input size is a multiple of 2.
-        rate_inputs = jpeg_proxy.pad_spatially_to_multiple_of_bsize(
+      def _with_420():
+        ri = jpeg_proxy.pad_spatially_to_multiple_of_bsize(
             three_channel_inputs, bsize=2, mode='SYMMETRIC'
         )
-        rate_inputs = convert_444_to_420(rate_inputs)
-      else:
-        rate_inputs = three_channel_inputs
+        return convert_444_to_420(ri)
+
+      rate_inputs = tf.cond(
+          conversion_to_420_needed,
+          _with_420,
+          lambda: three_channel_inputs,
+      )
 
       # Scale to 8-bit range so that the rate proxy can be used with any image
       # max.

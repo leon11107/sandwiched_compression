@@ -208,9 +208,20 @@ class UNet(tf.keras.Model):
     else:
       convolutions_sequence = encoder_convolutions_per_block
 
-    # Build the analysis multiresolution ladder, i.e., the left side of the U.
+    # Paper Sec V says U-Net([32,64,128,256]; [512,256,128,64,32]) has 4
+    # encoder blocks and 5 decoder blocks. The upstream code used
+    # range(num_encoder_blocks - 1), silently dropping the deepest encoder
+    # filter (256 in the default config), giving a 3-encoder/5-decoder net.
+    # Default behavior here is paper-aligned (build len(encoder_filters) blocks).
+    # Set SANDWICH_LEGACY_UNET=1 to restore the legacy build that loads
+    # pre-fix checkpoints (used by retrain_jpegfix_* runs).
+    import os as _os
+    _legacy_unet = _os.environ.get("SANDWICH_LEGACY_UNET", "0") == "1"
+    _num_encoder_built = (
+        num_encoder_blocks - 1 if _legacy_unet else num_encoder_blocks
+    )
     self._encoder_blocks = []
-    for encoder_idx in range(num_encoder_blocks - 1):
+    for encoder_idx in range(_num_encoder_built):
       encoder_block = EncoderBlock(
           num_convs=convolutions_sequence[encoder_idx],
           num_filters=encoder_filters_sequence[encoder_idx],
@@ -238,12 +249,17 @@ class UNet(tf.keras.Model):
       self._decoder_blocks.append(decoder_block)
 
     # Model to generate the final outputs of the Unet.
+    # ORTH_INIT=1 env switches to orthogonal kernel init so the per-output-channel
+    # kernels start mutually orthogonal — discourages channel-collapse attractor.
+    import os as _os
+    _orth = _os.environ.get("ORTH_INIT", "0") == "1"
     self._output_layer = tf.keras.layers.Conv2D(
         filters=output_channels,
         kernel_size=3,
         strides=1,
         padding='same',
         activation=output_activation,
+        kernel_initializer=('orthogonal' if _orth else 'glorot_uniform'),
         name='output',
     )
 

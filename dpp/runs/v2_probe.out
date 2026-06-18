@@ -1,0 +1,44 @@
+[v2] aligned-codec DPP: gamma=0.0 vif_gamma=0.1 lam=0.1 q~U[5,32] ch=64 ep=3 prior=dpp/runs/prior_aligned/entropy.pt calib_luma=yes(28q)
+/workspace/sandwiched_compression/dpp/train_v2.py:160: UserWarning: Converting a tensor with requires_grad=True to a scalar may lead to unexpected behavior.
+Consider using tensor.detach() first. (Triggered internally at /pytorch/torch/csrc/autograd/generated/python_variable_methods.cpp:835.)
+  rec = {"step": gstep, "ep": ep, "q": q, "L1_raw": float(l1),
+  [grad s   0] |gLF|w=1.78e-03 |grate|w=2.62e-03 |gvif|w=2.96e-03 | dScaler LF=+1.78e-03 rate=-2.62e-02 vif=+2.96e-02 | cos LF-ra=-1.00 LF-vi=+1.00 ra-vi=-1.00 | est/real=0.72 (real 0.720) | res 0.00/0.0 hfO/I=1.000
+[s    0 ep 0 q=29] L1=0.0168 (1-MS)=0.0178 VIF=0.535 MOS=0.000 bppE=0.515 | tot=0.1156 sh LF/P/V/R=0.15/0.00/0.40/0.45 | scl=+0.0000 g=0.002
+[s   20 ep 0 q=17] L1=0.0232 (1-MS)=0.0416 VIF=0.368 MOS=0.000 bppE=0.330 | tot=0.1341 sh LF/P/V/R=0.28/0.00/0.47/0.25 | scl=-0.0029 g=0.114
+  [grad s  25] |gLF|w=1.72e-01 |grate|w=2.68e-01 |gvif|w=3.18e-01 | dScaler LF=-1.72e-01 rate=-2.68e+00 vif=+3.17e+00 | cos LF-ra=+1.00 LF-vi=-1.00 ra-vi=-1.00 | est/real=0.75 (real 0.679) | res 1.12/10.8 hfO/I=1.004
+[s   40 ep 0 q=17] L1=0.0285 (1-MS)=0.0352 VIF=0.436 MOS=0.000 bppE=0.427 | tot=0.1329 sh LF/P/V/R=0.25/0.00/0.42/0.32 | scl=-0.0061 g=0.158
+  [grad s  50] |gLF|w=8.02e-01 |grate|w=6.62e-01 |gvif|w=1.04e+00 | dScaler LF=-8.02e-01 rate=-6.62e+00 vif=+1.04e+01 | cos LF-ra=+1.00 LF-vi=-1.00 ra-vi=-1.00 | est/real=0.67 (real 0.628) | res 3.21/35.7 hfO/I=1.020
+[s   60 ep 0 q=24] L1=0.0218 (1-MS)=0.0272 VIF=0.556 MOS=0.000 bppE=0.523 | tot=0.1228 sh LF/P/V/R=0.21/0.00/0.36/0.43 | scl=-0.0081 g=1.280
+  [grad s  75] |gLF|w=4.58e-01 |grate|w=2.86e-01 |gvif|w=1.24e+00 | dScaler LF=+4.57e-01 rate=-2.86e+00 vif=+1.24e+01 | cos LF-ra=-1.00 LF-vi=+1.00 ra-vi=-1.00 | est/real=0.59 (real 0.502) | res 2.23/20.0 hfO/I=1.024
+[s   80 ep 0 q=32] L1=0.0243 (1-MS)=0.0240 VIF=0.632 MOS=0.000 bppE=0.815 | tot=0.1424 sh LF/P/V/R=0.17/0.00/0.26/0.57 | scl=-0.0078 g=2.046
+== ep 0 (27s) LF=0.0407 VIF=0.440 MOS=0.000 bppE=0.395 scl=-0.0091
+   EVAL-diag q8: base 26.39dB@0.225 ms=0.93465 -> model 26.08dB@0.254 ms=0.93404 | q20: base 29.82dB@0.434 ms=0.97616 -> model 28.81dB@0.516 ms=0.96766
+  [grad s 100] |gLF|w=1.04e+00 |grate|w=8.30e-01 |gvif|w=2.71e+00 | dScaler LF=-1.03e+00 rate=-8.28e+00 vif=+2.69e+01 | cos LF-ra=+1.00 LF-vi=-1.00 ra-vi=-1.00 | est/real=0.70 (real 0.654) | res 3.38/37.3 hfO/I=1.048
+[s  100 ep 1 q=24] L1=0.0202 (1-MS)=0.0350 VIF=0.593 MOS=0.000 bppE=0.458 | tot=0.1185 sh LF/P/V/R=0.27/0.00/0.34/0.39 | scl=-0.0091 g=0.856
+  [NaN-guard] step 116 skipped
+[s  120 ep 1 q=16] L1=0.0265 (1-MS)=0.0355 VIF=0.422 MOS=0.000 bppE=0.384 | tot=0.1299 sh LF/P/V/R=0.26/0.00/0.44/0.30 | scl=-0.0094 g=0.312
+  [NaN-guard] step 125 skipped
+  [grad s 125] |gLF|w=2.33e+00 |grate|w=1.49e+00 |gvif|w=1.31e+00 | dScaler LF=-2.33e+00 rate=-1.49e+01 vif=+1.31e+01 | cos LF-ra=+1.00 LF-vi=-1.00 ra-vi=-1.00 | est/real=0.72 (real 0.866) | res 4.97/48.9 hfO/I=1.066
+[s  140 ep 1 q=24] L1=0.0231 (1-MS)=0.0382 VIF=0.632 MOS=0.000 bppE=0.536 | tot=0.1256 sh LF/P/V/R=0.28/0.00/0.29/0.43 | scl=-0.0099 g=0.595
+  [grad s 150] |gLF|w=1.26e+00 |grate|w=2.92e-01 |gvif|w=3.64e+00 | dScaler LF=-1.25e+00 rate=-2.91e+00 vif=+3.61e+01 | cos LF-ra=+1.00 LF-vi=-1.00 ra-vi=-1.00 | est/real=0.52 (real 0.464) | res 4.95/44.5 hfO/I=1.065
+  [NaN-guard] step 160 skipped
+[s  160 ep 1 q= 8] L1=0.0293 (1-MS)=0.0806 VIF=0.263 MOS=0.000 bppE=0.168 | tot=0.1608 sh LF/P/V/R=0.44/0.00/0.46/0.10 | scl=-0.0112 g=2.442
+  [grad s 175] |gLF|w=1.33e+00 |grate|w=2.45e-01 |gvif|w=3.57e+00 | dScaler LF=-1.32e+00 rate=-2.44e+00 vif=+3.54e+01 | cos LF-ra=+1.00 LF-vi=-1.00 ra-vi=-1.00 | est/real=0.47 (real 0.426) | res 6.30/58.1 hfO/I=1.106
+[s  180 ep 1 q=18] L1=0.0282 (1-MS)=0.0389 VIF=0.484 MOS=0.000 bppE=0.454 | tot=0.1338 sh LF/P/V/R=0.27/0.00/0.39/0.34 | scl=-0.0117 g=0.692
+== ep 1 (25s) LF=0.0635 VIF=0.521 MOS=0.000 bppE=0.401 scl=-0.0114
+   EVAL-diag q8: base 26.39dB@0.225 ms=0.93465 -> model 25.92dB@0.261 ms=0.92508 | q20: base 29.82dB@0.434 ms=0.97616 -> model 27.60dB@0.594 ms=0.93717
+  [grad s 200] |gLF|w=4.46e-01 |grate|w=3.67e-01 |gvif|w=2.18e+00 | dScaler LF=-4.41e-01 rate=-3.66e+00 vif=+2.17e+01 | cos LF-ra=+0.99 LF-vi=-1.00 ra-vi=-1.00 | est/real=0.51 (real 0.532) | res 5.42/61.0 hfO/I=1.109
+[s  200 ep 2 q=11] L1=0.0358 (1-MS)=0.0829 VIF=0.421 MOS=0.000 bppE=0.270 | tot=0.1584 sh LF/P/V/R=0.46/0.00/0.37/0.17 | scl=-0.0114 g=1.372
+  [NaN-guard] step 210 skipped
+[s  220 ep 2 q=27] L1=0.0288 (1-MS)=0.0884 VIF=0.792 MOS=0.000 bppE=0.605 | tot=0.1578 sh LF/P/V/R=0.48/0.00/0.13/0.38 | scl=-0.0112 g=6.043
+  [grad s 225] |gLF|w=4.11e+00 |grate|w=1.42e+00 |gvif|w=1.10e+00 | dScaler LF=-4.10e+00 rate=-1.42e+01 vif=+1.10e+01 | cos LF-ra=+1.00 LF-vi=-1.00 ra-vi=-1.00 | est/real=0.66 (real 0.876) | res 5.71/63.4 hfO/I=1.090
+[s  240 ep 2 q=25] L1=0.0254 (1-MS)=0.0597 VIF=0.843 MOS=0.000 bppE=0.548 | tot=0.1233 sh LF/P/V/R=0.43/0.00/0.13/0.44 | scl=-0.0110 g=1.220
+  [NaN-guard] step 250 skipped
+  [grad s 250] |gLF|w=8.88e-01 |grate|w=5.68e-02 |gvif|w=1.44e+00 | dScaler LF=+8.83e-01 rate=-5.64e-01 vif=+1.44e+01 | cos LF-ra=-1.00 LF-vi=+1.00 ra-vi=-0.99 | est/real=0.41 (real 0.396) | res 2.82/27.4 hfO/I=1.065
+[s  260 ep 2 q=17] L1=0.0368 (1-MS)=0.1267 VIF=0.627 MOS=0.000 bppE=0.428 | tot=0.1888 sh LF/P/V/R=0.58/0.00/0.20/0.23 | scl=-0.0111 g=6.236
+  [grad s 275] |gLF|w=3.64e+00 |grate|w=1.43e+00 |gvif|w=7.85e-01 | dScaler LF=-3.62e+00 rate=-1.42e+01 vif=+7.81e+00 | cos LF-ra=+1.00 LF-vi=-1.00 ra-vi=-1.00 | est/real=0.67 (real 0.896) | res 5.50/56.4 hfO/I=1.108
+[s  280 ep 2 q=21] L1=0.0308 (1-MS)=0.0787 VIF=0.770 MOS=0.000 bppE=0.509 | tot=0.1429 sh LF/P/V/R=0.48/0.00/0.16/0.36 | scl=-0.0118 g=2.089
+  [NaN-guard] step 284 skipped
+== ep 2 (25s) LF=0.0685 VIF=0.630 MOS=0.000 bppE=0.411 scl=-0.0119
+   EVAL-diag q8: base 26.39dB@0.225 ms=0.93465 -> model 26.31dB@0.236 ms=0.93297 | q20: base 29.82dB@0.434 ms=0.97616 -> model 29.10dB@0.503 ms=0.95994
+[v2] done -> dpp/runs/v2_probe

@@ -11,7 +11,7 @@ B2_APP_KEY="${2:?B2 applicationKey required}"
 BUCKET="${3:?bucket name required}"
 LOCAL_DIR="${4:?local directory required}"
 REMOTE_PATH="${5:?remote path required}"
-
+ ㄙ
 LOCAL_DIR="${LOCAL_DIR%/}"
 REMOTE_PATH="${REMOTE_PATH%/}"
 

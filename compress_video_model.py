@@ -21,7 +21,7 @@ from typing import Any, Callable, Dict, Optional, Tuple
 
 import logging
 import tensorflow as tf
-from tensorflow_addons import image as tfa_image
+import tfa_compat as tfa_image
 
 import compress_intra_model
 from image_compression import encode_decode_intra_lib
@@ -723,7 +723,7 @@ def create_basic_model(
       (downsample_factor = 1 for no downsampling).
     gamma: float that establishes the Lagrange multiplier in the optimized
       function "distortion + gamma * rate".
-    model_config_thresholds: Fraction of epochs over which different
+    model_config_thresholds: Fraction of epochs over which differentOK 
       configurations of the model should be trained. Useful in changing model
       configuration during training in order to find a better minimum.
     intra_dir: Directory to the pretrained intra model. If None, train the model

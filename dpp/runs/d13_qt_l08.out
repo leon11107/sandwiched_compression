@@ -1,0 +1,32 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading pretrained model NIMA from /root/.cache/torch/hub/pyiqa/NIMA_koniq-250367ae.pth
+[balle] Balle-rate DPP: gamma=0.01 lam=0.08 perceptual=nima-koniq ch=64 ep=25
+/workspace/sandwiched_compression/dpp/train_balle.py:145: UserWarning: Converting a tensor with requires_grad=True to a scalar may lead to unexpected behavior.
+Consider using tensor.detach() first. (Triggered internally at /pytorch/torch/csrc/autograd/generated/python_variable_methods.cpp:835.)
+  acc["LF"] += float(LF); acc["MOS"] += float(mos_val); acc["VIF"] += float(vif_val)
+ep  0/25 LF=0.0289 MOS=0.3665 VIF=0.0000 BalleBpp=5.347 lam=0.0800 total=0.4529 gnorm=0.150 scaler=-0.0099 | [diag q32] base PSNR=34.21@0.745 model PSNR=32.15@0.868 (28s)
+ep  1/25 LF=0.0306 MOS=0.3734 VIF=0.0000 BalleBpp=5.069 lam=0.0800 total=0.4323 gnorm=0.361 scaler=-0.0113 | [diag q32] base PSNR=34.21@0.745 model PSNR=32.58@0.899 (27s)
+ep  2/25 LF=0.0307 MOS=0.3760 VIF=0.0000 BalleBpp=4.818 lam=0.0800 total=0.4124 gnorm=0.514 scaler=-0.0115 | [diag q32] base PSNR=34.21@0.745 model PSNR=33.48@0.833 (27s)
+ep  3/25 LF=0.0317 MOS=0.3802 VIF=0.0000 BalleBpp=4.565 lam=0.0800 total=0.3931 gnorm=0.515 scaler=-0.0129 | [diag q32] base PSNR=34.21@0.745 model PSNR=32.18@0.943 (27s)
+ep  4/25 LF=0.0332 MOS=0.3810 VIF=0.0000 BalleBpp=4.329 lam=0.0800 total=0.3757 gnorm=0.593 scaler=-0.0133 | [diag q32] base PSNR=34.21@0.745 model PSNR=32.85@0.885 (27s)
+ep  5/25 LF=0.0290 MOS=0.3774 VIF=0.0000 BalleBpp=4.128 lam=0.0800 total=0.3554 gnorm=0.460 scaler=-0.0132 | [diag q32] base PSNR=34.21@0.745 model PSNR=33.52@0.809 (27s)
+ep  6/25 LF=0.0289 MOS=0.3819 VIF=0.0000 BalleBpp=3.906 lam=0.0800 total=0.3376 gnorm=0.468 scaler=-0.0136 | [diag q32] base PSNR=34.21@0.745 model PSNR=33.07@0.840 (27s)
+ep  7/25 LF=0.0310 MOS=0.3852 VIF=0.0000 BalleBpp=3.694 lam=0.0800 total=0.3226 gnorm=0.496 scaler=-0.0140 | [diag q32] base PSNR=34.21@0.745 model PSNR=33.41@0.763 (27s)
+ep  8/25 LF=0.0345 MOS=0.3908 VIF=0.0000 BalleBpp=3.482 lam=0.0800 total=0.3091 gnorm=0.593 scaler=-0.0145 | [diag q32] base PSNR=34.21@0.745 model PSNR=33.09@0.841 (27s)
+ep  9/25 LF=0.0308 MOS=0.3855 VIF=0.0000 BalleBpp=3.318 lam=0.0800 total=0.2924 gnorm=0.498 scaler=-0.0144 | [diag q32] base PSNR=34.21@0.745 model PSNR=32.50@0.933 (27s)
+ep 10/25 LF=0.0298 MOS=0.3830 VIF=0.0000 BalleBpp=3.165 lam=0.0800 total=0.2792 gnorm=0.482 scaler=-0.0141 | [diag q32] base PSNR=34.21@0.745 model PSNR=32.84@0.840 (27s)
+ep 11/25 LF=0.0336 MOS=0.3869 VIF=0.0000 BalleBpp=2.987 lam=0.0800 total=0.2687 gnorm=0.611 scaler=-0.0141 | [diag q32] base PSNR=34.21@0.745 model PSNR=32.82@0.776 (27s)
+ep 12/25 LF=0.0320 MOS=0.3842 VIF=0.0000 BalleBpp=2.832 lam=0.0800 total=0.2547 gnorm=0.497 scaler=-0.0150 | [diag q32] base PSNR=34.21@0.745 model PSNR=32.24@0.853 (27s)
+ep 13/25 LF=0.0336 MOS=0.3914 VIF=0.0000 BalleBpp=2.670 lam=0.0800 total=0.2433 gnorm=0.486 scaler=-0.0154 | [diag q32] base PSNR=34.21@0.745 model PSNR=31.94@0.905 (27s)
+ep 14/25 LF=0.0317 MOS=0.3812 VIF=0.0000 BalleBpp=2.546 lam=0.0800 total=0.2316 gnorm=0.412 scaler=-0.0157 | [diag q32] base PSNR=34.21@0.745 model PSNR=31.49@0.958 (27s)
+ep 15/25 LF=0.0337 MOS=0.3818 VIF=0.0000 BalleBpp=2.436 lam=0.0800 total=0.2248 gnorm=0.448 scaler=-0.0164 | [diag q32] base PSNR=34.21@0.745 model PSNR=31.00@0.959 (27s)
+ep 16/25 LF=0.0316 MOS=0.3764 VIF=0.0000 BalleBpp=2.326 lam=0.0800 total=0.2139 gnorm=0.412 scaler=-0.0159 | [diag q32] base PSNR=34.21@0.745 model PSNR=31.70@0.807 (27s)
+ep 17/25 LF=0.0297 MOS=0.3715 VIF=0.0000 BalleBpp=2.242 lam=0.0800 total=0.2053 gnorm=0.279 scaler=-0.0151 | [diag q32] base PSNR=34.21@0.745 model PSNR=31.25@0.701 (27s)
+ep 18/25 LF=0.0299 MOS=0.3681 VIF=0.0000 BalleBpp=2.144 lam=0.0800 total=0.1977 gnorm=0.261 scaler=-0.0150 | [diag q32] base PSNR=34.21@0.745 model PSNR=30.87@0.657 (27s)
+ep 19/25 LF=0.0318 MOS=0.3723 VIF=0.0000 BalleBpp=2.040 lam=0.0800 total=0.1913 gnorm=0.299 scaler=-0.0160 | [diag q32] base PSNR=34.21@0.745 model PSNR=30.39@0.702 (27s)
+ep 20/25 LF=0.0309 MOS=0.3637 VIF=0.0000 BalleBpp=1.988 lam=0.0800 total=0.1863 gnorm=0.266 scaler=-0.0155 | [diag q32] base PSNR=34.21@0.745 model PSNR=30.47@0.650 (27s)
+ep 21/25 LF=0.0316 MOS=0.3513 VIF=0.0000 BalleBpp=1.947 lam=0.0800 total=0.1839 gnorm=0.265 scaler=-0.0152 | [diag q32] base PSNR=34.21@0.745 model PSNR=32.30@0.730 (27s)
+ep 22/25 LF=0.0301 MOS=0.3503 VIF=0.0000 BalleBpp=1.892 lam=0.0800 total=0.1780 gnorm=0.228 scaler=-0.0162 | [diag q32] base PSNR=34.21@0.745 model PSNR=31.10@0.746 (27s)
+ep 23/25 LF=0.0335 MOS=0.3610 VIF=0.0000 BalleBpp=1.810 lam=0.0800 total=0.1747 gnorm=0.248 scaler=-0.0177 | [diag q32] base PSNR=34.21@0.745 model PSNR=30.31@0.884 (27s)
+ep 24/25 LF=0.0314 MOS=0.3480 VIF=0.0000 BalleBpp=1.797 lam=0.0800 total=0.1717 gnorm=0.273 scaler=-0.0168 | [diag q32] base PSNR=34.21@0.745 model PSNR=28.81@0.582 (27s)
+[balle] done -> dpp/runs/d13_qt_l08/model.pt

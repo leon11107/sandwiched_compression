@@ -1,0 +1,28 @@
+== (1) RANGE MAP: training arm (flat qstep, 4:4:4, lossless chroma) ==
+  qstep=    12  bpp=1.5646  psnr=40.12  msssim=0.99373
+  qstep=    24  bpp=0.8524  psnr=36.06  msssim=0.98429
+  qstep=    32  bpp=0.6591  psnr=34.44  msssim=0.97701
+  qstep=    48  bpp=0.4565  psnr=32.28  msssim=0.96273
+  qstep=    64  bpp=0.3514  psnr=30.80  msssim=0.94765
+  qstep=    96  bpp=0.2441  psnr=28.80  msssim=0.91527
+  qstep=   128  bpp=0.1926  psnr=27.51  msssim=0.88932
+== (1) eval arm (Annex-K quality, 4:2:0 full lossy) ==
+   [effective Annex-K luma steps: DC/AC-mean/AC-max per quality]
+  quality=  5  bpp=0.1234  psnr=24.84  msssim=0.86924   | table: DC=160 ACmean=230 ACmax=255
+  quality=  8  bpp=0.1798  psnr=26.93  msssim=0.92155   | table: DC=100 ACmean=208 ACmax=255
+  quality= 12  bpp=0.2511  psnr=28.51  msssim=0.94875   | table: DC=67 ACmean=187 ACmax=255
+  quality= 20  bpp=0.3733  psnr=30.42  msssim=0.97228   | table: DC=40 ACmean=143 ACmax=255
+  quality= 32  bpp=0.5299  psnr=31.91  msssim=0.98352   | table: DC=25 ACmean=91 ACmax=189
+  -> training bpp range (qstep 12-64): [0.351, 1.565] | eval bpp range: [0.123, 0.530]
+== (2) MATCHED-BPP: eval-q vs closest flat-qstep (per-image match) ==
+  eval q=  5 ~ flat qstep median=255 | PSNR(train_dec, eval_dec)=23.37dB | errE ratio train/eval: LF=1.01 HF=0.99 all=1.01
+  eval q=  8 ~ flat qstep median=160 | PSNR(train_dec, eval_dec)=25.37dB | errE ratio train/eval: LF=1.00 HF=0.96 all=1.00
+  eval q= 12 ~ flat qstep median=96 | PSNR(train_dec, eval_dec)=27.65dB | errE ratio train/eval: LF=1.00 HF=0.90 all=1.00
+  eval q= 20 ~ flat qstep median=64 | PSNR(train_dec, eval_dec)=29.57dB | errE ratio train/eval: LF=1.00 HF=0.77 all=1.00
+  eval q= 32 ~ flat qstep median=40 | PSNR(train_dec, eval_dec)=31.03dB | errE ratio train/eval: LF=1.00 HF=0.60 all=1.00
+== (3) CHROMA ISO: Annex-K 4:4:4+lossless-chroma vs full 4:2:0 ==
+  q=  5 420full: bpp=0.1234 psnr=24.84 ms=0.86924 | 444+losslessC: bpp=0.1710 psnr=26.85 ms=0.87085
+  q=  8 420full: bpp=0.1798 psnr=26.93 ms=0.92155 | 444+losslessC: bpp=0.2301 psnr=28.75 ms=0.92222
+  q= 12 420full: bpp=0.2511 psnr=28.51 ms=0.94875 | 444+losslessC: bpp=0.3066 psnr=30.22 ms=0.94951
+  q= 20 420full: bpp=0.3733 psnr=30.42 ms=0.97228 | 444+losslessC: bpp=0.4398 psnr=31.97 ms=0.97253
+  q= 32 420full: bpp=0.5299 psnr=31.91 ms=0.98352 | 444+losslessC: bpp=0.6181 psnr=33.52 ms=0.98367

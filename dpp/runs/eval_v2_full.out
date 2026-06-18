@@ -1,0 +1,121 @@
+50 imgs from /workspace/sandwiched_compression/dpp/data/val50; qualities=[5, 8, 12, 20, 32]
+preprocessed: d11_A_champ (scaler n/a) <- dpp/runs/d11_A_champ/model.pt
+preprocessed: d13_qt_l03 (scaler n/a) <- dpp/runs/d13_qt_l03/model.pt
+preprocessed: d13_qt_l05 (scaler n/a) <- dpp/runs/d13_qt_l05/model.pt
+preprocessed: d13_qt_l08 (scaler n/a) <- dpp/runs/d13_qt_l08/model.pt
+preprocessed: d13_flat_l05 (scaler n/a) <- dpp/runs/d13_flat_l05/model.pt
+preprocessed: d12_lamann_mod (scaler n/a) <- dpp/runs/d12_lamann_mod/model.pt
+preprocessed: d12_ctrl (scaler n/a) <- dpp/runs/d12_ctrl/model.pt
+preprocessed: balle_l06 (scaler n/a) <- dpp/runs/balle_l06/model.pt
+preprocessed: nima_g01_fix (scaler n/a) <- dpp/runs/nima_g01_fix/model.pt
+[baseline q=5] bpp=0.1353 psnr=24.39 msssim=0.87445
+[baseline q=8] bpp=0.1996 psnr=26.40 msssim=0.92279
+[baseline q=12] bpp=0.2780 psnr=27.92 msssim=0.95030
+[baseline q=20] bpp=0.4124 psnr=29.73 msssim=0.97287
+[baseline q=32] bpp=0.5819 psnr=31.19 msssim=0.98397
+[d11_A_champ q=5] bpp=0.1296 psnr=24.34 msssim=0.87251
+[d11_A_champ q=8] bpp=0.1914 psnr=26.31 msssim=0.92158
+[d11_A_champ q=12] bpp=0.2689 psnr=27.77 msssim=0.94891
+[d11_A_champ q=20] bpp=0.4085 psnr=29.42 msssim=0.97025
+[d11_A_champ q=32] bpp=0.5963 psnr=30.60 msssim=0.97924
+[d13_qt_l03 q=5] bpp=0.1306 psnr=24.35 msssim=0.87303
+[d13_qt_l03 q=8] bpp=0.1927 psnr=26.33 msssim=0.92209
+[d13_qt_l03 q=12] bpp=0.2702 psnr=27.81 msssim=0.94953
+[d13_qt_l03 q=20] bpp=0.4080 psnr=29.53 msssim=0.97137
+[d13_qt_l03 q=32] bpp=0.5931 psnr=30.84 msssim=0.98108
+[d13_qt_l05 q=5] bpp=0.1266 psnr=24.30 msssim=0.87176
+[d13_qt_l05 q=8] bpp=0.1850 psnr=26.24 msssim=0.92060
+[d13_qt_l05 q=12] bpp=0.2572 psnr=27.67 msssim=0.94845
+[d13_qt_l05 q=20] bpp=0.3842 psnr=29.31 msssim=0.97076
+[d13_qt_l05 q=32] bpp=0.5506 psnr=30.53 msssim=0.98131
+[d13_qt_l08 q=5] bpp=0.1184 psnr=24.09 msssim=0.86677
+[d13_qt_l08 q=8] bpp=0.1708 psnr=25.85 msssim=0.91575
+[d13_qt_l08 q=12] bpp=0.2361 psnr=27.07 msssim=0.94336
+[d13_qt_l08 q=20] bpp=0.3513 psnr=28.36 msssim=0.96557
+[d13_qt_l08 q=32] bpp=0.5056 psnr=29.20 msssim=0.97594
+[d13_flat_l05 q=5] bpp=0.1284 psnr=24.33 msssim=0.87202
+[d13_flat_l05 q=8] bpp=0.1882 psnr=26.29 msssim=0.92100
+[d13_flat_l05 q=12] bpp=0.2623 psnr=27.74 msssim=0.94862
+[d13_flat_l05 q=20] bpp=0.3935 psnr=29.40 msssim=0.97074
+[d13_flat_l05 q=32] bpp=0.5684 psnr=30.59 msssim=0.98058
+[d12_lamann_mod q=5] bpp=0.1334 psnr=24.37 msssim=0.87394
+[d12_lamann_mod q=8] bpp=0.1981 psnr=26.35 msssim=0.92294
+[d12_lamann_mod q=12] bpp=0.2792 psnr=27.85 msssim=0.94995
+[d12_lamann_mod q=20] bpp=0.4234 psnr=29.58 msssim=0.97151
+[d12_lamann_mod q=32] bpp=0.6154 psnr=30.87 msssim=0.98099
+[d12_ctrl q=5] bpp=0.1303 psnr=24.34 msssim=0.87293
+[d12_ctrl q=8] bpp=0.1927 psnr=26.31 msssim=0.92197
+[d12_ctrl q=12] bpp=0.2709 psnr=27.78 msssim=0.94928
+[d12_ctrl q=20] bpp=0.4110 psnr=29.45 msssim=0.97076
+[d12_ctrl q=32] bpp=0.5977 psnr=30.67 msssim=0.98021
+[balle_l06 q=5] bpp=0.1255 psnr=24.26 msssim=0.87064
+[balle_l06 q=8] bpp=0.1827 psnr=26.16 msssim=0.91963
+[balle_l06 q=12] bpp=0.2537 psnr=27.53 msssim=0.94725
+[balle_l06 q=20] bpp=0.3791 psnr=29.05 msssim=0.96943
+[balle_l06 q=32] bpp=0.5456 psnr=30.07 msssim=0.97938
+[nima_g01_fix q=5] bpp=0.1396 psnr=24.25 msssim=0.87864
+[nima_g01_fix q=8] bpp=0.2081 psnr=26.05 msssim=0.92328
+[nima_g01_fix q=12] bpp=0.2913 psnr=27.40 msssim=0.95005
+[nima_g01_fix q=20] bpp=0.4352 psnr=28.91 msssim=0.97084
+[nima_g01_fix q=32] bpp=0.6175 psnr=30.04 msssim=0.98103
+[vmaf d11_A_champ q=5] vmaf=68.82 vmaf_neg=66.95 @ 0.1296bpp
+[vmaf baseline q=5] vmaf=71.91 vmaf_neg=69.70 @ 0.1353bpp
+[vmaf baseline q=8] vmaf=81.85 vmaf_neg=79.51 @ 0.1996bpp
+[vmaf d11_A_champ q=8] vmaf=78.25 vmaf_neg=76.24 @ 0.1914bpp
+[vmaf baseline q=12] vmaf=90.92 vmaf_neg=88.76 @ 0.2780bpp
+[vmaf d11_A_champ q=12] vmaf=87.04 vmaf_neg=85.02 @ 0.2689bpp
+[vmaf baseline q=20] vmaf=98.13 vmaf_neg=97.43 @ 0.4124bpp
+[vmaf baseline q=32] vmaf=99.16 vmaf_neg=99.06 @ 0.5819bpp
+[vmaf d13_qt_l03 q=5] vmaf=69.41 vmaf_neg=67.44 @ 0.1306bpp
+[vmaf d13_qt_l03 q=8] vmaf=78.94 vmaf_neg=76.84 @ 0.1927bpp
+[vmaf d11_A_champ q=20] vmaf=95.49 vmaf_neg=94.22 @ 0.4085bpp
+[vmaf d13_qt_l03 q=12] vmaf=87.87 vmaf_neg=85.76 @ 0.2702bpp
+[vmaf d13_qt_l05 q=5] vmaf=67.06 vmaf_neg=65.33 @ 0.1266bpp
+[vmaf d11_A_champ q=32] vmaf=98.22 vmaf_neg=97.90 @ 0.5963bpp
+[vmaf d13_qt_l03 q=20] vmaf=96.31 vmaf_neg=95.09 @ 0.4080bpp
+[vmaf d13_qt_l03 q=32] vmaf=98.61 vmaf_neg=98.35 @ 0.5931bpp
+[vmaf d13_qt_l05 q=8] vmaf=75.90 vmaf_neg=74.10 @ 0.1850bpp
+[vmaf d13_qt_l05 q=12] vmaf=84.15 vmaf_neg=82.35 @ 0.2572bpp
+[vmaf d13_qt_l08 q=5] vmaf=61.26 vmaf_neg=59.95 @ 0.1184bpp
+[vmaf d13_qt_l08 q=8] vmaf=67.96 vmaf_neg=66.55 @ 0.1708bpp
+[vmaf d13_qt_l05 q=20] vmaf=93.02 vmaf_neg=91.62 @ 0.3842bpp
+[vmaf d13_qt_l08 q=12] vmaf=74.41 vmaf_neg=72.97 @ 0.2361bpp
+[vmaf d13_qt_l05 q=32] vmaf=96.93 vmaf_neg=96.34 @ 0.5506bpp
+[vmaf d13_qt_l08 q=20] vmaf=81.58 vmaf_neg=80.14 @ 0.3513bpp
+[vmaf d13_flat_l05 q=5] vmaf=68.33 vmaf_neg=66.52 @ 0.1284bpp
+[vmaf d13_flat_l05 q=8] vmaf=77.47 vmaf_neg=75.58 @ 0.1882bpp
+[vmaf d13_qt_l08 q=32] vmaf=86.23 vmaf_neg=84.91 @ 0.5056bpp
+[vmaf d13_flat_l05 q=12] vmaf=86.00 vmaf_neg=84.13 @ 0.2623bpp
+[vmaf d12_lamann_mod q=5] vmaf=70.53 vmaf_neg=68.43 @ 0.1334bpp
+[vmaf d13_flat_l05 q=20] vmaf=94.62 vmaf_neg=93.41 @ 0.3935bpp
+[vmaf d12_lamann_mod q=8] vmaf=80.52 vmaf_neg=78.20 @ 0.1981bpp
+[vmaf d13_flat_l05 q=32] vmaf=97.81 vmaf_neg=97.46 @ 0.5684bpp
+[vmaf d12_lamann_mod q=12] vmaf=89.71 vmaf_neg=87.39 @ 0.2792bpp
+[vmaf d12_ctrl q=5] vmaf=69.19 vmaf_neg=67.23 @ 0.1303bpp
+[vmaf d12_lamann_mod q=20] vmaf=97.46 vmaf_neg=96.45 @ 0.4234bpp
+[vmaf d12_ctrl q=8] vmaf=78.68 vmaf_neg=76.61 @ 0.1927bpp
+[vmaf d12_lamann_mod q=32] vmaf=98.96 vmaf_neg=98.80 @ 0.6154bpp
+[vmaf d12_ctrl q=12] vmaf=87.58 vmaf_neg=85.47 @ 0.2709bpp
+[vmaf d12_ctrl q=20] vmaf=95.91 vmaf_neg=94.65 @ 0.4110bpp
+[vmaf d12_ctrl q=32] vmaf=98.40 vmaf_neg=98.10 @ 0.5977bpp
+[vmaf balle_l06 q=5] vmaf=66.26 vmaf_neg=64.61 @ 0.1255bpp
+[vmaf balle_l06 q=8] vmaf=74.74 vmaf_neg=72.99 @ 0.1827bpp
+[vmaf balle_l06 q=12] vmaf=82.67 vmaf_neg=80.93 @ 0.2537bpp
+[vmaf nima_g01_fix q=5] vmaf=73.40 vmaf_neg=70.67 @ 0.1396bpp
+[vmaf balle_l06 q=20] vmaf=91.23 vmaf_neg=89.73 @ 0.3791bpp
+[vmaf balle_l06 q=32] vmaf=95.27 vmaf_neg=94.52 @ 0.5456bpp
+[vmaf nima_g01_fix q=8] vmaf=84.03 vmaf_neg=80.81 @ 0.2081bpp
+[vmaf nima_g01_fix q=12] vmaf=93.26 vmaf_neg=90.09 @ 0.2913bpp
+[vmaf nima_g01_fix q=20] vmaf=98.69 vmaf_neg=97.88 @ 0.4352bpp
+[vmaf nima_g01_fix q=32] vmaf=99.32 vmaf_neg=99.13 @ 0.6175bpp
+=== d11_A_champ: BD-rate%% (neg=win) PSNR=+1.57 MSSSIM=-0.89 VMAF=+13.82 VMAF_NEG=+13.07 | maxPSNRdrop=+0.59dB
+=== d13_qt_l03: BD-rate%% (neg=win) PSNR=+0.65 MSSSIM=-1.32 VMAF=+10.23 VMAF_NEG=+9.84 | maxPSNRdrop=+0.35dB
+=== d13_qt_l05: BD-rate%% (neg=win) PSNR=-1.05 MSSSIM=-4.37 VMAF=+21.91 VMAF_NEG=+19.83 | maxPSNRdrop=+0.66dB
+=== d13_qt_l08: BD-rate%% (neg=win) PSNR=+3.66 MSSSIM=-6.12 VMAF=+73.17 VMAF_NEG=+66.57 | maxPSNRdrop=+1.99dB
+=== d13_flat_l05: BD-rate%% (neg=win) PSNR=-0.50 MSSSIM=-2.79 VMAF=+15.58 VMAF_NEG=+13.96 | maxPSNRdrop=+0.60dB
+=== d12_lamann_mod: BD-rate%% (neg=win) PSNR=+3.02 MSSSIM=+0.93 VMAF=+5.69 VMAF_NEG=+6.11 | maxPSNRdrop=+0.32dB
+=== d12_ctrl: BD-rate%% (neg=win) PSNR=+1.85 MSSSIM=-0.78 VMAF=+12.16 VMAF_NEG=+11.75 | maxPSNRdrop=+0.52dB
+=== balle_l06: BD-rate%% (neg=win) PSNR=+0.87 MSSSIM=-4.11 VMAF=+28.02 VMAF_NEG=+25.58 | maxPSNRdrop=+1.12dB
+=== nima_g01_fix: BD-rate%% (neg=win) PSNR=+18.10 MSSSIM=+4.79 VMAF=-3.94 VMAF_NEG=-0.34 | maxPSNRdrop=+1.15dB
+=== ENVELOPE(all): bd_rgb_psnr=+5.21 bd_msssim=-0.77 bd_vmaf=+7.55 bd_vmaf_neg=+9.96
+saved dpp/runs/eval_v2_full.json

@@ -1,0 +1,18 @@
+== qstep 32 ==
+  [control] real-vs-real FD self-consistency cosine = +1.000 (should be ~+1)
+  straight_through   distortion-grad cosine(proxy,real) = -0.416
+  noise_injection    distortion-grad cosine(proxy,real) = +0.039
+  polynomial         distortion-grad cosine(proxy,real) = +0.000
+  ste_polynomial     distortion-grad cosine(proxy,real) = +0.000
+== qstep 64 ==
+  [control] real-vs-real FD self-consistency cosine = +1.000 (should be ~+1)
+  straight_through   distortion-grad cosine(proxy,real) = -0.167
+  noise_injection    distortion-grad cosine(proxy,real) = +0.042
+  polynomial         distortion-grad cosine(proxy,real) = +0.000
+  ste_polynomial     distortion-grad cosine(proxy,real) = +0.000
+== qstep 96 ==
+  [control] real-vs-real FD self-consistency cosine = +1.000 (should be ~+1)
+  straight_through   distortion-grad cosine(proxy,real) = -0.050
+  noise_injection    distortion-grad cosine(proxy,real) = -0.027
+  polynomial         distortion-grad cosine(proxy,real) = +0.000
+  ste_polynomial     distortion-grad cosine(proxy,real) = +0.000
